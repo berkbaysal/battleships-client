@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useServerContext } from './context/ServerContext';
+import { useGameContext } from './context/GameContext';
 
 function App() {
   const [input, setInput] = useState('');
 
-  const game = useServerContext();
+  const game = useGameContext();
   console.log(game.game);
   return (
     <div className="App">
@@ -12,6 +12,7 @@ function App() {
       <button onClick={() => game.createRoom(input)}>create</button>
       <button onClick={() => game.joinRoom(input)}>join</button>
       <button onClick={() => game.startGame(true)}>start</button>
+      <button onClick={() => game.attackCell(5)}>attack</button>
     </div>
   );
 }

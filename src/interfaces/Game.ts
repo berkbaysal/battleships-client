@@ -1,7 +1,7 @@
 export default interface Game {
-  activeGame: boolean;
+  activeGame?: boolean;
   roomName?: string;
   opponent?: string;
-  playerBoard?: number[][];
-  opponentBoard?: number[][];
+  playerBoard?: number[];
+  opponentBoard?: number[];
 }
