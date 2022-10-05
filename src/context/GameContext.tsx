@@ -1,17 +1,8 @@
 import { createContext, useCallback, useContext, useState } from 'react';
-import Game from '../interfaces/Game';
+import { Game, GameContextInterface } from '../static/interfaces';
 import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
-
-interface GameContextInterface {
-  game: Game;
-  updateGame: (game: Game) => void;
-  joinRoom: (roomName: string) => void;
-  createRoom: (roomName: string) => void;
-  startGame: (emit?: boolean) => void;
-  handleAttack: (cell: number) => void;
-  attackCell: (cell: number) => void;
-}
+import boardValues from '../static/boardValues';
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
@@ -62,6 +53,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
   const attackCell = useCallback(
     (cell: number) => {
       socket.emit('attack-cell', { opponent: game.opponent, cell: cell });
+      updateGame({ selectedCell: null });
     },
     [socket, game.opponent]
   );
@@ -70,19 +62,19 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
     (cell: number) => {
       if (!game.playerBoard) {
         throw new Error('Player board is not defined.');
-      } else if (game.playerBoard[cell] === 0) {
+      } else if (game.playerBoard[cell] === boardValues.empty) {
         console.log('Attack missed');
       } else {
         console.log('Attack hit');
       }
     },
-    [game.playerBoard]
+    [JSON.stringify(game.playerBoard)]
   );
 
   return (
     <GameContext.Provider
       value={{
-        game: game,
+        data: game,
         updateGame: updateGame,
         joinRoom: joinRoom,
         createRoom: createRoom,

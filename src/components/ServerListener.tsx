@@ -18,11 +18,16 @@ const ServerListener = ({ socket, children }: ContextProps) => {
       console.log('game starting...');
       game.startGame(false);
     });
+  }, [socket]);
+  useEffect(() => {
     socket.on('attack-cell', (cell) => {
       console.log('incoming attack on cell ' + cell);
       game.handleAttack(cell);
     });
-  }, [socket]);
+    return function removeListener() {
+      socket.off('attack-cell');
+    };
+  }, [socket, game.data.playerBoard]);
   return <>{children}</>;
 };
 
