@@ -1,18 +1,22 @@
+import { Socket } from 'socket.io-client';
+
 export interface Game {
   activeGame?: boolean;
   roomName?: string;
   opponent?: string;
   playerBoard?: number[];
   opponentBoard?: number[];
-  selectedCell?: number | null;
+  selectedCell?: number | undefined;
 }
 
 export interface GameContextInterface {
   data: Game;
-  updateGame: (game: Game) => void;
+  updateData: (game: Game) => void;
+  updatePlayerBoard: (newBoard: number[]) => void;
+  updateOpponentBoard: (newBoard: number[]) => void;
   joinRoom: (roomName: string) => void;
   createRoom: (roomName: string) => void;
   startGame: (emit?: boolean) => void;
-  handleAttack: (cell: number) => void;
+  handleAttack: (cell: number, socket: Socket) => void;
   attackCell: (cell: number) => void;
 }

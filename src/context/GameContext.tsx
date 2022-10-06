@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useState } from 'react';
 import { Game, GameContextInterface } from '../static/interfaces';
 import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
-import boardValues from '../static/boardValues';
+import { playerBoardValues } from '../static/boardValues';
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
@@ -22,8 +22,16 @@ interface ContextProps {
 const GameContextProvider = ({ children, socket }: ContextProps) => {
   const [game, setGame] = useState<Game>({ activeGame: false, playerBoard: [], opponentBoard: [] });
 
-  const updateGame = (game: Game) => {
-    setGame((oldGame) => ({ ...oldGame, ...game }));
+  const updateData = (data: Game) => {
+    setGame((oldGame) => ({ ...oldGame, ...data }));
+  };
+
+  const updatePlayerBoard = (newBoard: number[]) => {
+    updateData({ playerBoard: newBoard });
+  };
+
+  const updateOpponentBoard = (newBoard: number[]) => {
+    updateData({ opponentBoard: newBoard });
   };
 
   const joinRoom = useCallback(
@@ -53,29 +61,31 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
   const attackCell = useCallback(
     (cell: number) => {
       socket.emit('attack-cell', { opponent: game.opponent, cell: cell });
-      updateGame({ selectedCell: null });
+      updateData({ selectedCell: undefined });
     },
     [socket, game.opponent]
   );
 
   const handleAttack = useCallback(
-    (cell: number) => {
+    (cell: number, socket: Socket) => {
       if (!game.playerBoard) {
         throw new Error('Player board is not defined.');
-      } else if (game.playerBoard[cell] === boardValues.empty) {
-        console.log('Attack missed');
+      } else if (game.playerBoard[cell] === playerBoardValues.empty) {
+        socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: false });
       } else {
-        console.log('Attack hit');
+        socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: true });
       }
     },
-    [JSON.stringify(game.playerBoard)]
+    [game.playerBoard]
   );
 
   return (
     <GameContext.Provider
       value={{
         data: game,
-        updateGame: updateGame,
+        updateData: updateData,
+        updatePlayerBoard: updatePlayerBoard,
+        updateOpponentBoard: updateOpponentBoard,
         joinRoom: joinRoom,
         createRoom: createRoom,
         startGame: startGame,

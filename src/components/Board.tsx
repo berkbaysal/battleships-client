@@ -1,19 +1,21 @@
 import { useGameContext } from '../context/GameContext';
+import gameEngine from '../static/gameEngine';
 import style from '../styles/Board.module.css';
 
 interface BoardProps {
   boardData: number[];
-  selectable?: boolean;
+  boardType: 'player' | 'opponent';
 }
 
-const Board = ({ boardData, selectable = true }: BoardProps) => {
+const Board = ({ boardData, boardType }: BoardProps) => {
   const cellsPerRow = Math.sqrt(boardData.length);
+  const selectable = boardType === 'opponent';
 
   const game = useGameContext();
 
   function handleClick(cellIndex: number) {
     console.log(cellIndex);
-    game.updateGame({ selectedCell: cellIndex });
+    game.updateData({ selectedCell: cellIndex });
   }
 
   return (
@@ -22,12 +24,11 @@ const Board = ({ boardData, selectable = true }: BoardProps) => {
         {boardData.map((cellValue, index) => {
           return (
             <div
-              className={`${style.cell} ${game.data.selectedCell === index ? style.selected : ''}`}
+              className={`${style.cell} ${game.data.selectedCell === index && selectable ? style.selected : ''}`}
               onClick={() => (selectable ? handleClick(index) : undefined)}
               key={'cell-' + index}
-            >
-              {cellValue}
-            </div>
+              style={gameEngine.getCellStyle(boardType, cellValue)}
+            ></div>
           );
         })}
       </div>
