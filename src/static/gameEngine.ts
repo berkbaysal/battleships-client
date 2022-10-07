@@ -1,4 +1,4 @@
-import { playerBoardValues, opponentBoardValues } from './boardValues';
+import { playerBoardValues, opponentBoardValues } from './gameValues';
 
 const gameEngine = {
   initBoard: (size = 10) => {
@@ -55,6 +55,41 @@ const gameEngine = {
     }
 
     return style;
+  },
+  calculatePlacementShift(input: string, orientation: 'vertical' | 'horizontal', board: number[], originCell: number, size: number) {
+    const boardSize = Math.sqrt(board.length);
+    let newOriginCell: number;
+    switch (input) {
+      case 'ArrowDown':
+        newOriginCell = (originCell + boardSize) % board.length;
+        break;
+      case 'ArrowUp':
+        newOriginCell = (originCell - boardSize) % board.length;
+        if (newOriginCell < 0) newOriginCell = newOriginCell + board.length;
+        break;
+      case 'ArrowRight':
+        newOriginCell = (originCell + 1) % board.length;
+        break;
+      case 'ArrowLeft':
+        newOriginCell = (originCell - 1) % board.length;
+        if (newOriginCell < 0) newOriginCell = newOriginCell + board.length;
+        break;
+      default:
+        throw new Error('undefined keystroke');
+    }
+    console.log(newOriginCell);
+    let shipCells: number[] = [];
+    if (orientation === 'horizontal') {
+      for (let i = 0; i < size; i++) {
+        shipCells.push(newOriginCell + i);
+      }
+    } else {
+      for (let i = 0; i < size; i++) {
+        shipCells.push(newOriginCell + i * boardSize);
+      }
+    }
+    if (shipCells.some((cell) => cell > board.length - 1)) return null;
+    else return shipCells;
   },
 };
 

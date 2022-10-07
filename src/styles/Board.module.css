@@ -2,10 +2,12 @@
   display: flex;
   margin: 1rem;
 }
+
 .board {
   display: grid;
   gap: 0;
 }
+
 .cell {
   width: 2rem;
   height: 2rem;
@@ -15,6 +17,23 @@
   justify-content: center;
   cursor: pointer;
 }
+
 .selected {
   background-color: lightgreen !important;
+}
+
+.--blinking {
+  animation: blink 2s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

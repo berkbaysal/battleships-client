@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io-client';
 
 export interface Game {
-  activeGame?: boolean;
+  gameState?: 'placement' | 'active' | 'inactive';
   clientId?: string;
   turn?: string;
   roomName?: string;

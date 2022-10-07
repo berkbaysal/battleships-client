@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import { useGameContext } from '../context/GameContext';
 import gameEngine from '../static/gameEngine';
-import { opponentBoardValues } from '../static/boardValues';
+import { opponentBoardValues } from '../static/gameValues';
 
 interface ContextProps {
   children: JSX.Element;

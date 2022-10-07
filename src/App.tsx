@@ -27,8 +27,17 @@ function App() {
         attack
       </button>
       <div style={{ display: 'flex' }}>
-        <Board boardData={game.data.playerBoard ? game.data.playerBoard : []} boardType="player" />
-        <Board boardData={game.data.opponentBoard ? game.data.opponentBoard : []} boardType="opponent" />
+        {game.data.gameState === 'placement' && (
+          <>
+            <Board boardData={game.data.playerBoard ? game.data.playerBoard : []} boardType="placement" />
+          </>
+        )}
+        {game.data.gameState === 'active' && (
+          <>
+            <Board boardData={game.data.playerBoard ? game.data.playerBoard : []} boardType="player" />
+            <Board boardData={game.data.opponentBoard ? game.data.opponentBoard : []} boardType="opponent" />
+          </>
+        )}
       </div>
     </div>
   );

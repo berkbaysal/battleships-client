@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useState } from 'react';
 import { Game, GameContextInterface } from '../static/interfaces';
 import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
-import { playerBoardValues } from '../static/boardValues';
+import { playerBoardValues } from '../static/gameValues';
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
@@ -20,7 +20,7 @@ interface ContextProps {
 }
 
 const GameContextProvider = ({ children, socket }: ContextProps) => {
-  const [game, setGame] = useState<Game>({ activeGame: false, playerBoard: [], opponentBoard: [] });
+  const [game, setGame] = useState<Game>({ gameState: 'inactive', playerBoard: [], opponentBoard: [] });
 
   const updateData = (data: Game) => {
     setGame((oldGame) => ({ ...oldGame, ...data }));
@@ -52,7 +52,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
 
   const startGame = useCallback(
     (emit: boolean = false) => {
-      updateData({ activeGame: true, playerBoard: gameEngine.initBoard(), opponentBoard: gameEngine.initBoard() });
+      updateData({ gameState: 'placement', playerBoard: gameEngine.initBoard(), opponentBoard: gameEngine.initBoard() });
       if (emit) socket.emit('start-game', { roomName: game.roomName, opponent: game.opponent });
     },
     [socket, game.opponent, game.roomName]
