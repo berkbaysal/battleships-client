@@ -2,6 +2,8 @@ import { Socket } from 'socket.io-client';
 
 export interface Game {
   activeGame?: boolean;
+  clientId?: string;
+  turn?: string;
   roomName?: string;
   opponent?: string;
   playerBoard?: number[];

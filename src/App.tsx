@@ -8,6 +8,9 @@ function App() {
 
   const game = useGameContext();
   console.log(game.data);
+
+  const disabled = game.data.clientId !== game.data.turn;
+  console.log(game.data.clientId, game.data.turn);
   return (
     <div className="App">
       <input type="text" value={input} onChange={(e) => setInput(e.target.value)}></input>
@@ -19,13 +22,14 @@ function App() {
         onClick={() => {
           if (game.data.selectedCell !== undefined) game.attackCell(game.data.selectedCell);
         }}
+        disabled={disabled}
       >
         attack
       </button>
-
-      <Board boardData={game.data.playerBoard ? game.data.playerBoard : []} boardType="player" />
-      <br />
-      <Board boardData={game.data.opponentBoard ? game.data.opponentBoard : []} boardType="opponent" />
+      <div style={{ display: 'flex' }}>
+        <Board boardData={game.data.playerBoard ? game.data.playerBoard : []} boardType="player" />
+        <Board boardData={game.data.opponentBoard ? game.data.opponentBoard : []} boardType="opponent" />
+      </div>
     </div>
   );
 }

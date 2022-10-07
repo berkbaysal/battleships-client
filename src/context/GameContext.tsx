@@ -52,7 +52,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
 
   const startGame = useCallback(
     (emit: boolean = false) => {
-      setGame((oldGame) => ({ ...oldGame, activeGame: true, playerBoard: [...gameEngine.initBoard()], opponentBoard: gameEngine.initBoard() }));
+      updateData({ activeGame: true, playerBoard: gameEngine.initBoard(), opponentBoard: gameEngine.initBoard() });
       if (emit) socket.emit('start-game', { roomName: game.roomName, opponent: game.opponent });
     },
     [socket, game.opponent, game.roomName]
@@ -71,9 +71,9 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
       if (!game.playerBoard) {
         throw new Error('Player board is not defined.');
       } else if (game.playerBoard[cell] === playerBoardValues.empty) {
-        socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: false });
+        socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: false, roomName: game.roomName });
       } else {
-        socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: true });
+        socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: true, roomName: game.roomName });
       }
     },
     [game.playerBoard]

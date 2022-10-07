@@ -14,6 +14,7 @@ const ServerListener = ({ socket, children }: ContextProps) => {
   useEffect(() => {
     socket.on('connect', () => {});
     socket.on('client-update', (payload) => {
+      console.log('client update: ', payload);
       game.updateData(payload);
     });
     socket.on('start-game', () => {
