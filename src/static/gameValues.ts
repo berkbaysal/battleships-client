@@ -1,18 +1,20 @@
 const playerBoardValues = {
   empty: 0,
   ship: 1,
+  placingShip: 101,
+  placingShipCollides: 102,
 };
 const opponentBoardValues = {
   unknown: 0,
   missed: -1,
   hit: 1,
 };
-const ships = {
-  aircraftCarrier: 5,
-  battleship: 4,
-  cruiser: 3,
-  destoryer: 2,
-  submarine: 1,
-};
+const ships = [
+  { name: 'Aircraft Carrier', size: 5 },
+  { name: 'Battleship', size: 4 },
+  { name: 'Cruiser', size: 3 },
+  { name: 'Destoryer', size: 2 },
+  { name: 'Submarine', size: 1 },
+];
 
 export { playerBoardValues, opponentBoardValues, ships };

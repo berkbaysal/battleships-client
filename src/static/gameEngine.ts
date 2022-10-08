@@ -39,6 +39,12 @@ const gameEngine = {
         case playerBoardValues.ship:
           style.backgroundColor = 'gray';
           break;
+        case playerBoardValues.placingShip:
+          style.backgroundColor = 'yellow';
+          break;
+        case playerBoardValues.placingShipCollides:
+          style.backgroundColor = 'red';
+          break;
       }
     } else {
       switch (cellValue) {
@@ -61,18 +67,30 @@ const gameEngine = {
     let newOriginCell: number;
     switch (input) {
       case 'ArrowDown':
-        newOriginCell = (originCell + boardSize) % board.length;
+        newOriginCell = originCell + boardSize;
+        if (newOriginCell > board.length - 1) {
+          newOriginCell = originCell;
+        }
         break;
       case 'ArrowUp':
-        newOriginCell = (originCell - boardSize) % board.length;
-        if (newOriginCell < 0) newOriginCell = newOriginCell + board.length;
+        newOriginCell = originCell - boardSize;
+        if (newOriginCell < 0) newOriginCell = originCell;
         break;
       case 'ArrowRight':
-        newOriginCell = (originCell + 1) % board.length;
+        newOriginCell = originCell + 1;
+        if ((newOriginCell % boardSize) + size > boardSize && orientation === 'horizontal') {
+          newOriginCell = originCell;
+        } else if (newOriginCell % boardSize === 0 && orientation === 'vertical') {
+          newOriginCell = originCell;
+        }
         break;
       case 'ArrowLeft':
-        newOriginCell = (originCell - 1) % board.length;
-        if (newOriginCell < 0) newOriginCell = newOriginCell + board.length;
+        if (originCell % boardSize === 0 && orientation === 'vertical') {
+          newOriginCell = (originCell + boardSize - 1) % board.length;
+        } else if (originCell % boardSize === 0 && orientation === 'horizontal') {
+          newOriginCell = originCell;
+        } else newOriginCell = (originCell - 1) % board.length;
+        if (newOriginCell < 0) newOriginCell = originCell;
         break;
       default:
         throw new Error('undefined keystroke');
@@ -88,9 +106,27 @@ const gameEngine = {
         shipCells.push(newOriginCell + i * boardSize);
       }
     }
+    console.log(shipCells);
     if (shipCells.some((cell) => cell > board.length - 1)) return null;
     else return shipCells;
   },
+  swapOrientationOfShipCells(shipCells: number[], board: number[], currentOrientation: 'vertical' | 'horizontal') {
+    console.log(shipCells, board, currentOrientation);
+    const boardSize = Math.sqrt(board.length);
+    const originCell = shipCells[0];
+    let newShipCells = [];
+    if (currentOrientation === 'vertical') {
+      for (let i = 0; i < shipCells.length; i++) {
+        newShipCells.push(originCell + i);
+      }
+    } else {
+      for (let i = 0; i < shipCells.length; i++) {
+        newShipCells.push(originCell + i * boardSize);
+      }
+    }
+    return newShipCells;
+  },
+  willRotationBeOutOfBounds() {},
 };
 
 export default gameEngine;
