@@ -49,6 +49,7 @@ const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
       console.log(newShipCells);
       setPlacement((oldData) => ({
         ...oldData,
+        originCell: newShipCells[0],
         orientation: oldData.orientation === 'vertical' ? 'horizontal' : 'vertical',
         shipCells: newShipCells,
       }));

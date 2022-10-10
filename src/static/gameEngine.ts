@@ -85,12 +85,10 @@ const gameEngine = {
         }
         break;
       case 'ArrowLeft':
-        if (originCell % boardSize === 0 && orientation === 'vertical') {
-          newOriginCell = (originCell + boardSize - 1) % board.length;
-        } else if (originCell % boardSize === 0 && orientation === 'horizontal') {
+        newOriginCell = originCell - 1;
+        if (originCell % boardSize === 0) {
           newOriginCell = originCell;
-        } else newOriginCell = (originCell - 1) % board.length;
-        if (newOriginCell < 0) newOriginCell = originCell;
+        }
         break;
       default:
         throw new Error('undefined keystroke');
@@ -124,9 +122,30 @@ const gameEngine = {
         newShipCells.push(originCell + i * boardSize);
       }
     }
-    return newShipCells;
+    return this.adjustForOutOfBounds(newShipCells, board, currentOrientation);
   },
-  willRotationBeOutOfBounds() {},
+  adjustForOutOfBounds(shipCells: number[], board: number[], currentOrientation: 'vertical' | 'horizontal') {
+    const boardSize = Math.sqrt(board.length);
+    let newShipCells: number[] = [];
+    let adjustmentAmount = 0;
+    if (currentOrientation === 'horizontal' && shipCells.some((cell) => cell >= board.length)) {
+      shipCells.forEach((cell) => {
+        if (cell > board.length) adjustmentAmount++;
+      });
+      newShipCells = shipCells.map((cell) => cell - boardSize * adjustmentAmount);
+      return newShipCells;
+    } else if (currentOrientation == 'vertical' && shipCells.some((cell, index) => cell % boardSize === 0 && index !== 0)) {
+      shipCells.forEach((cell, index) => {
+        if (cell % boardSize === 0) {
+          adjustmentAmount = shipCells.length - index;
+        }
+      });
+      newShipCells = shipCells.map((cell) => cell - adjustmentAmount);
+      return newShipCells;
+    } else {
+      return shipCells;
+    }
+  },
 };
 
 export default gameEngine;
