@@ -36,6 +36,8 @@ const PlacementBoard = () => {
     placementBoard: game.data.playerBoard ? game.data.playerBoard : [],
   });
 
+  const isThereCollision = gameEngine.checkCollision(game.data.playerBoard ? game.data.playerBoard : [], placement.shipCells);
+
   function handleKeydown(e: KeyboardEvent) {
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       const newShipCells = gameEngine.calculatePlacementShift(
@@ -63,8 +65,8 @@ const PlacementBoard = () => {
       }));
       updatePlacementBoard(newShipCells);
     } else if (e.key === 'Enter') {
+      if (isThereCollision) return;
       const updatedBoard = gameEngine.placeShips(placement.placementBoard, placement.shipCells);
-
       if (placement.currentShipIndex + 1 === ships.length) {
         game.updateData({ playerBoard: [...updatedBoard], gameState: 'active' });
       } else {
@@ -122,12 +124,17 @@ const PlacementBoard = () => {
     return () => document.removeEventListener('keydown', handleKeydown);
   }, [placement.orientation, placement.currentShipIndex, placement.placementBoard, placement.shipCells, game.data.playerBoard]);
 
-  console.log(placement);
-
+  console.log('collision: ', isThereCollision);
   return (
     <>
       {placement.placementBoard.map((cellValue, index) => {
-        return <div className={`${style.cell}`} key={'cell-' + index} style={gameEngine.getCellStyle('player', cellValue)}></div>;
+        return (
+          <div
+            className={`${style.cell}`}
+            key={'cell-' + index}
+            style={{ ...gameEngine.getCellStyle('player', cellValue, isThereCollision) }}
+          ></div>
+        );
       })}
     </>
   );

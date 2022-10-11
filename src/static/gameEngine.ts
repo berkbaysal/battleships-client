@@ -1,3 +1,4 @@
+import React from 'react';
 import { playerBoardValues, opponentBoardValues } from './gameValues';
 
 const gameEngine = {
@@ -26,7 +27,7 @@ const gameEngine = {
     });
     return newArray;
   },
-  getCellStyle(boardType: 'player' | 'opponent', cellValue: number) {
+  getCellStyle(boardType: 'player' | 'opponent', cellValue: number, collision: boolean = false) {
     let style = { backgroundColor: '' };
 
     if (boardType === 'player') {
@@ -38,7 +39,7 @@ const gameEngine = {
           style.backgroundColor = 'gray';
           break;
         case playerBoardValues.placingShip:
-          style.backgroundColor = 'yellow';
+          style.backgroundColor = collision ? 'red' : 'yellow';
           break;
         case playerBoardValues.placingShipCollides:
           style.backgroundColor = 'red';
@@ -156,6 +157,17 @@ const gameEngine = {
       }
     });
     return newBoard;
+  },
+  checkCollision(board: number[], shipCells: number[]) {
+    let collision = false;
+    for (let i = 0; i < shipCells.length; i++) {
+      let boardIndex = shipCells[i];
+      if (board[boardIndex] !== playerBoardValues.empty) {
+        collision = true;
+        break;
+      }
+    }
+    return collision;
   },
 };
 
