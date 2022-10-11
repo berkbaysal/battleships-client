@@ -9,6 +9,7 @@ export interface Game {
   playerBoard?: number[];
   opponentBoard?: number[];
   selectedCell?: number | undefined;
+  activeGame?: boolean;
 }
 
 export interface GameContextInterface {

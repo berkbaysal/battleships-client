@@ -12,7 +12,6 @@ const GameBoard = ({ boardData, boardType }: GameBoardProps) => {
   const selectable = boardType === 'opponent';
 
   function handleClick(cellIndex: number) {
-    console.log(cellIndex);
     game.updateData({ selectedCell: cellIndex });
   }
 

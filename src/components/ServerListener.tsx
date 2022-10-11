@@ -14,17 +14,14 @@ const ServerListener = ({ socket, children }: ContextProps) => {
   useEffect(() => {
     socket.on('connect', () => {});
     socket.on('client-update', (payload) => {
-      console.log('client update: ', payload);
       game.updateData(payload);
     });
     socket.on('start-game', () => {
-      console.log('game starting...');
       game.startGame(false);
     });
   }, [socket]);
   useEffect(() => {
     socket.on('attack-cell', (cell) => {
-      console.log('incoming attack on cell ' + cell);
       game.handleAttack(cell, socket);
     });
     return function removeListener() {

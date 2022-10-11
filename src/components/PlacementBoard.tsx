@@ -3,6 +3,7 @@ import gameEngine from '../static/gameEngine';
 import style from '../styles/Board.module.css';
 import { ships } from '../static/gameValues';
 import { playerBoardValues } from '../static/gameValues';
+import { useGameContext } from '../context/GameContext';
 
 interface PlacementBoardProps {
   boardData: number[];
@@ -28,8 +29,12 @@ const INITIAL_PLACEMENT_STATE: PlacementInterface = {
   placementBoard: [],
 };
 
-const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
-  const [placement, setPlacement] = useState<PlacementInterface>({ ...INITIAL_PLACEMENT_STATE, placementBoard: boardData });
+const PlacementBoard = () => {
+  const game = useGameContext();
+  const [placement, setPlacement] = useState<PlacementInterface>({
+    ...INITIAL_PLACEMENT_STATE,
+    placementBoard: game.data.playerBoard ? game.data.playerBoard : [],
+  });
 
   function handleKeydown(e: KeyboardEvent) {
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
@@ -45,8 +50,11 @@ const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
         updatePlacementBoard(newShipCells);
       }
     } else if (e.key === 'r') {
-      const newShipCells = gameEngine.swapOrientationOfShipCells(placement.shipCells, placement.placementBoard, placement.orientation);
-      console.log(newShipCells);
+      const newShipCells = gameEngine.swapOrientationOfShipCells(
+        placement.shipCells,
+        placement.placementBoard,
+        placement.orientation
+      );
       setPlacement((oldData) => ({
         ...oldData,
         originCell: newShipCells[0],
@@ -54,6 +62,15 @@ const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
         shipCells: newShipCells,
       }));
       updatePlacementBoard(newShipCells);
+    } else if (e.key === 'Enter') {
+      const updatedBoard = gameEngine.placeShips(placement.placementBoard, placement.shipCells);
+
+      if (placement.currentShipIndex + 1 === ships.length) {
+        game.updateData({ playerBoard: [...updatedBoard], gameState: 'active' });
+      } else {
+        game.updateData({ playerBoard: [...updatedBoard] });
+        advancePlacement(updatedBoard);
+      }
     }
   }
 
@@ -63,8 +80,8 @@ const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
       placementBoard: oldBoard.placementBoard.map((cell, index) => {
         if (shipCells.includes(index)) {
           return playerBoardValues.placingShip;
-        } else if (!shipCells.includes(index) && cell === playerBoardValues.placingShip) {
-          return boardData[index];
+        } else if (!shipCells.includes(index) && cell === playerBoardValues.placingShip && game.data.playerBoard) {
+          return game.data.playerBoard[index];
         } else {
           return cell;
         }
@@ -72,10 +89,29 @@ const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
     }));
   }
 
+  function advancePlacement(newBoard: number[]) {
+    const boardSize = Math.sqrt(placement.placementBoard.length);
+    const newIndex = placement.currentShipIndex + 1;
+    const newSize = ships[newIndex].size;
+    let newShipCells: number[] = [];
+    for (let i = 0; i < newSize; i++) {
+      newShipCells.push(i * boardSize);
+    }
+    setPlacement((oldData) => ({
+      ...oldData,
+      currentShipIndex: newIndex,
+      size: newSize,
+      orientation: 'vertical',
+      shipCells: newShipCells,
+      originCell: 0,
+      placementBoard: newBoard,
+    }));
+    updatePlacementBoard(newShipCells);
+  }
+
   useEffect(() => {
     function init() {
       updatePlacementBoard(placement.shipCells);
-      console.log(placement.placementBoard);
     }
     init();
     updatePlacementBoard(placement.shipCells);
@@ -84,8 +120,10 @@ const PlacementBoard = ({ boardData }: PlacementBoardProps) => {
   useEffect(() => {
     document.addEventListener('keydown', handleKeydown);
     return () => document.removeEventListener('keydown', handleKeydown);
-  }, [placement.originCell, placement.placementBoard, placement.orientation]);
-  console.log(placement.orientation);
+  }, [placement.orientation, placement.currentShipIndex, placement.placementBoard, placement.shipCells, game.data.playerBoard]);
+
+  console.log(placement);
+
   return (
     <>
       {placement.placementBoard.map((cellValue, index) => {

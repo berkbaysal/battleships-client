@@ -9,7 +9,6 @@ const gameEngine = {
     return board;
   },
   placeTestShips: (board: number[] | undefined) => {
-    console.log(board);
     let newBoard: number[] = [];
     if (board) newBoard = [...board];
     newBoard[0] = 1;
@@ -25,7 +24,6 @@ const gameEngine = {
         return value;
       }
     });
-    console.log(newArray);
     return newArray;
   },
   getCellStyle(boardType: 'player' | 'opponent', cellValue: number) {
@@ -62,7 +60,13 @@ const gameEngine = {
 
     return style;
   },
-  calculatePlacementShift(input: string, orientation: 'vertical' | 'horizontal', board: number[], originCell: number, size: number) {
+  calculatePlacementShift(
+    input: string,
+    orientation: 'vertical' | 'horizontal',
+    board: number[],
+    originCell: number,
+    size: number
+  ) {
     const boardSize = Math.sqrt(board.length);
     let newOriginCell: number;
     switch (input) {
@@ -93,7 +97,6 @@ const gameEngine = {
       default:
         throw new Error('undefined keystroke');
     }
-    console.log(newOriginCell);
     let shipCells: number[] = [];
     if (orientation === 'horizontal') {
       for (let i = 0; i < size; i++) {
@@ -104,12 +107,10 @@ const gameEngine = {
         shipCells.push(newOriginCell + i * boardSize);
       }
     }
-    console.log(shipCells);
     if (shipCells.some((cell) => cell > board.length - 1)) return null;
     else return shipCells;
   },
   swapOrientationOfShipCells(shipCells: number[], board: number[], currentOrientation: 'vertical' | 'horizontal') {
-    console.log(shipCells, board, currentOrientation);
     const boardSize = Math.sqrt(board.length);
     const originCell = shipCells[0];
     let newShipCells = [];
@@ -130,7 +131,7 @@ const gameEngine = {
     let adjustmentAmount = 0;
     if (currentOrientation === 'horizontal' && shipCells.some((cell) => cell >= board.length)) {
       shipCells.forEach((cell) => {
-        if (cell > board.length) adjustmentAmount++;
+        if (cell >= board.length) adjustmentAmount++;
       });
       newShipCells = shipCells.map((cell) => cell - boardSize * adjustmentAmount);
       return newShipCells;
@@ -145,6 +146,16 @@ const gameEngine = {
     } else {
       return shipCells;
     }
+  },
+  placeShips(board: number[], shipCells: number[]) {
+    let newBoard = board.map((cell, index) => {
+      if (shipCells.includes(index)) {
+        return playerBoardValues.ship;
+      } else {
+        return cell;
+      }
+    });
+    return newBoard;
   },
 };
 

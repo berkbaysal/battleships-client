@@ -20,7 +20,7 @@ interface ContextProps {
 }
 
 const GameContextProvider = ({ children, socket }: ContextProps) => {
-  const [game, setGame] = useState<Game>({ gameState: 'inactive', playerBoard: [], opponentBoard: [] });
+  const [game, setGame] = useState<Game>({ gameState: 'inactive', playerBoard: [], opponentBoard: [], activeGame: false });
 
   const updateData = (data: Game) => {
     setGame((oldGame) => ({ ...oldGame, ...data }));
@@ -52,7 +52,12 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
 
   const startGame = useCallback(
     (emit: boolean = false) => {
-      updateData({ gameState: 'placement', playerBoard: gameEngine.initBoard(), opponentBoard: gameEngine.initBoard() });
+      updateData({
+        gameState: 'placement',
+        playerBoard: gameEngine.initBoard(),
+        opponentBoard: gameEngine.initBoard(),
+        activeGame: true,
+      });
       if (emit) socket.emit('start-game', { roomName: game.roomName, opponent: game.opponent });
     },
     [socket, game.opponent, game.roomName]

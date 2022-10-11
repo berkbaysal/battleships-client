@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { LegacyRef, MutableRefObject, Ref, useRef, useState } from 'react';
 import Board from './components/Board';
 import { useGameContext } from './context/GameContext';
 import gameEngine from './static/gameEngine';
@@ -7,17 +7,35 @@ function App() {
   const [input, setInput] = useState('');
 
   const game = useGameContext();
-  console.log(game.data);
+  const board = useRef<HTMLButtonElement>(null);
 
-  const disabled = game.data.clientId !== game.data.turn;
-  console.log(game.data.clientId, game.data.turn);
+  const disabled = game.data.clientId !== game.data.turn && game.data.activeGame;
+  //console.log(game.data.playerBoard);
   return (
     <div className="App">
       <input type="text" value={input} onChange={(e) => setInput(e.target.value)}></input>
-      <button onClick={() => game.createRoom(input)}>create</button>
-      <button onClick={() => game.joinRoom(input)}>join</button>
-      <button onClick={() => game.startGame(true)}>start</button>
-      <button onClick={() => game.updateData({ playerBoard: gameEngine.placeTestShips(game.data.playerBoard) })}>test</button>
+      <button onClick={() => game.createRoom(input)} disabled={game.data.activeGame}>
+        create
+      </button>
+      <button onClick={() => game.joinRoom(input)} disabled={game.data.activeGame}>
+        join
+      </button>
+      <button
+        ref={board}
+        onClick={() => {
+          game.startGame(true);
+          board.current?.blur();
+        }}
+        disabled={game.data.activeGame}
+      >
+        start
+      </button>
+      <button
+        onClick={() => game.updateData({ playerBoard: gameEngine.placeTestShips(game.data.playerBoard) })}
+        disabled={game.data.activeGame}
+      >
+        test
+      </button>
       <button
         onClick={() => {
           if (game.data.selectedCell !== undefined) game.attackCell(game.data.selectedCell);
