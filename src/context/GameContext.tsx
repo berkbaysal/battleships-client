@@ -93,9 +93,14 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
       if (!game.playerBoard) {
         throw new Error('Player board is not defined.');
       } else if (game.playerBoard[cell] === playerBoardValues.empty) {
+        const updatedBoard = gameEngine.changeCellValue(game.playerBoard, cell, playerBoardValues.missedShot);
+        updateData({ playerBoard: updatedBoard });
         socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: false, roomName: game.roomName });
       } else {
+        const updatedBoard = gameEngine.changeCellValue(game.playerBoard, cell, playerBoardValues.shipWreck);
+        updateData({ playerBoard: updatedBoard });
         socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: true, roomName: game.roomName });
+        console.log(gameEngine.isGameLost(updatedBoard));
       }
     },
     [game.playerBoard]

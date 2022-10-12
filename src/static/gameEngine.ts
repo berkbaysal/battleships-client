@@ -44,6 +44,12 @@ const gameEngine = {
         case playerBoardValues.placingShipCollides:
           style.backgroundColor = 'red';
           break;
+        case playerBoardValues.shipWreck:
+          style.backgroundColor = 'red';
+          break;
+        case playerBoardValues.missedShot:
+          style.backgroundColor = 'yellow';
+          break;
       }
     } else {
       switch (cellValue) {
@@ -168,6 +174,9 @@ const gameEngine = {
       }
     }
     return collision;
+  },
+  isGameLost(playerBoard: number[]) {
+    return playerBoard.every((cell) => cell !== playerBoardValues.ship);
   },
 };
 

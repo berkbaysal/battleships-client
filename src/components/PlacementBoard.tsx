@@ -109,13 +109,15 @@ const PlacementBoard = () => {
     updatePlacementBoard(newShipCells);
   }
 
+  //INITIALIZE SHIP PLACEMENT
   useEffect(() => {
-    let shipCells = [];
+    let shipCells: number[] = [];
     const boardSize = Math.sqrt(placement.placementBoard.length);
     for (let i = 0; i < placement.size; i++) {
       shipCells.push(i * boardSize);
     }
     updatePlacementBoard(shipCells);
+    setPlacement((oldData) => ({ ...oldData, shipCells: shipCells }));
   }, []);
 
   //SET AND CLEAN UP KEYDOWN EVENT LISTENERS ON RELEVANT UPDATES
