@@ -1,7 +1,20 @@
 import { Socket } from 'socket.io-client';
 
 export interface Game {
-  gameState?: 'placement' | 'active' | 'inactive';
+  gameState: 'placement' | 'active' | 'inactive' | 'waiting';
+  opponentGameState: null | 'placement' | 'active' | 'waiting';
+  clientId: string | null;
+  turn: string;
+  roomName: string | null;
+  opponent: string | null;
+  playerBoard: number[];
+  opponentBoard: number[];
+  selectedCell: number | null;
+  activeGame: boolean;
+}
+export interface GameUpdate {
+  gameState?: 'placement' | 'active' | 'inactive' | 'waiting';
+  opponentGameState?: null | 'placement' | 'active' | 'waiting';
   clientId?: string;
   turn?: string;
   roomName?: string;
@@ -12,9 +25,19 @@ export interface Game {
   activeGame?: boolean;
 }
 
+export interface PlacementInterface {
+  orientation: 'vertical' | 'horizontal';
+  originCell: number;
+  size: number;
+  colliding: boolean;
+  currentShipIndex: number;
+  shipCells: number[];
+  placementBoard: number[];
+}
+
 export interface GameContextInterface {
   data: Game;
-  updateData: (game: Game) => void;
+  updateData: (game: GameUpdate) => void;
   updatePlayerBoard: (newBoard: number[]) => void;
   updateOpponentBoard: (newBoard: number[]) => void;
   joinRoom: (roomName: string) => void;
@@ -22,4 +45,5 @@ export interface GameContextInterface {
   startGame: (emit?: boolean) => void;
   handleAttack: (cell: number, socket: Socket) => void;
   attackCell: (cell: number) => void;
+  completePlacement: () => void;
 }

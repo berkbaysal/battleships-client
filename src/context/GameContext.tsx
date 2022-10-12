@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useState } from 'react';
-import { Game, GameContextInterface } from '../static/interfaces';
+import { Game, GameUpdate, GameContextInterface } from '../static/interfaces';
 import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
 import { playerBoardValues } from '../static/gameValues';
@@ -19,10 +19,23 @@ interface ContextProps {
   socket: Socket;
 }
 
-const GameContextProvider = ({ children, socket }: ContextProps) => {
-  const [game, setGame] = useState<Game>({ gameState: 'inactive', playerBoard: [], opponentBoard: [], activeGame: false });
+const INIT_STATE: Game = {
+  gameState: 'inactive',
+  opponentGameState: null,
+  clientId: null,
+  turn: '',
+  roomName: null,
+  opponent: null,
+  playerBoard: [],
+  opponentBoard: [],
+  selectedCell: null,
+  activeGame: false,
+};
 
-  const updateData = (data: Game) => {
+const GameContextProvider = ({ children, socket }: ContextProps) => {
+  const [game, setGame] = useState<Game>(INIT_STATE);
+
+  const updateData = (data: GameUpdate) => {
     setGame((oldGame) => ({ ...oldGame, ...data }));
   };
 
@@ -41,6 +54,9 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
     },
     [socket]
   );
+  const completePlacement = useCallback(() => {
+    socket.emit('ready', { opponent: game.opponent, opponentGameState: game.opponentGameState });
+  }, [game.opponent, game.opponentGameState, socket]);
 
   const createRoom = useCallback(
     (roomName: string) => {
@@ -57,6 +73,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         playerBoard: gameEngine.initBoard(),
         opponentBoard: gameEngine.initBoard(),
         activeGame: true,
+        opponentGameState: 'placement',
       });
       if (emit) socket.emit('start-game', { roomName: game.roomName, opponent: game.opponent });
     },
@@ -96,6 +113,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         startGame: startGame,
         attackCell: attackCell,
         handleAttack: handleAttack,
+        completePlacement: completePlacement,
       }}
     >
       {children}

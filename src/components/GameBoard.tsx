@@ -9,7 +9,7 @@ interface GameBoardProps {
 
 const GameBoard = ({ boardData, boardType }: GameBoardProps) => {
   const game = useGameContext();
-  const selectable = boardType === 'opponent';
+  const selectable = boardType === 'opponent'; //used to disable selecting on player board
 
   function handleClick(cellIndex: number) {
     game.updateData({ selectedCell: cellIndex });
