@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useState } from 'react';
 import { Game, GameUpdate, GameContextInterface } from '../static/interfaces';
 import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
-import { playerBoardValues } from '../static/gameValues';
+import { opponentBoardValues, playerBoardValues } from '../static/gameValues';
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
@@ -30,6 +30,7 @@ const INIT_STATE: Game = {
   opponentBoard: [],
   selectedCell: null,
   activeGame: false,
+  winner: null,
 };
 
 const GameContextProvider = ({ children, socket }: ContextProps) => {
@@ -100,7 +101,10 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         const updatedBoard = gameEngine.changeCellValue(game.playerBoard, cell, playerBoardValues.shipWreck);
         updateData({ playerBoard: updatedBoard });
         socket.emit('attack-result', { opponent: game.opponent, cell: cell, outcome: true, roomName: game.roomName });
-        console.log(gameEngine.isGameLost(updatedBoard));
+        if (gameEngine.isGameLost(updatedBoard)) {
+          updateData({ gameState: 'game-over', winner: game.opponent });
+          socket.emit('game-over', { opponent: game.opponent, roomName: game.roomName });
+        }
       }
     },
     [game.playerBoard]

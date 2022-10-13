@@ -29,6 +29,11 @@ const ServerListener = ({ socket, children }: ContextProps) => {
     };
   }, [socket, game.data.playerBoard]);
   useEffect(() => {
+    socket.on('game-over', () => {
+      game.updateData({ gameState: 'game-over', winner: game.data.clientId });
+    });
+  }, [game.data.clientId]);
+  useEffect(() => {
     socket.on('attack-result', ({ cell, outcome }) => {
       if (game.data.opponentBoard) {
         game.updateOpponentBoard(

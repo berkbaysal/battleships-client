@@ -1,8 +1,8 @@
 import { Socket } from 'socket.io-client';
 
 export interface Game {
-  gameState: 'placement' | 'active' | 'inactive' | 'waiting';
-  opponentGameState: null | 'placement' | 'active' | 'waiting';
+  gameState: 'placement' | 'active' | 'inactive' | 'waiting' | 'game-over';
+  opponentGameState: null | 'placement' | 'active' | 'waiting' | 'game-over';
   clientId: string | null;
   turn: string;
   roomName: string | null;
@@ -11,18 +11,20 @@ export interface Game {
   opponentBoard: number[];
   selectedCell: number | null;
   activeGame: boolean;
+  winner: string | null;
 }
 export interface GameUpdate {
-  gameState?: 'placement' | 'active' | 'inactive' | 'waiting';
-  opponentGameState?: null | 'placement' | 'active' | 'waiting';
+  gameState?: 'placement' | 'active' | 'inactive' | 'waiting' | 'game-over';
+  opponentGameState?: null | 'placement' | 'active' | 'waiting' | 'game-over';
   clientId?: string;
   turn?: string;
   roomName?: string;
   opponent?: string;
   playerBoard?: number[];
   opponentBoard?: number[];
-  selectedCell?: number | undefined;
+  selectedCell?: number | null;
   activeGame?: boolean;
+  winner?: string | null;
 }
 
 export interface PlacementInterface {

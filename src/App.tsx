@@ -24,6 +24,14 @@ function App() {
             <Board boardData={game.data.opponentBoard} boardType="opponent" />
           </>
         )}
+        {game.data.gameState === 'game-over' && (
+          <>
+            <div>
+              Game Over. <br />
+              {game.data.winner === game.data.clientId ? 'You won!' : 'You lost.'}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
