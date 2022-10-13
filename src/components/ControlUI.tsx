@@ -29,12 +29,6 @@ const ControlUI = () => {
         start
       </button>
       <button
-        onClick={() => game.updateData({ playerBoard: gameEngine.placeTestShips(game.data.playerBoard) })}
-        disabled={game.data.activeGame}
-      >
-        test
-      </button>
-      <button
         onClick={() => {
           if (game.data.selectedCell !== null) game.attackCell(game.data.selectedCell);
         }}

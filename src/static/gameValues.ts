@@ -12,9 +12,9 @@ const opponentBoardValues = {
   hit: 1,
 };
 const ships = [
-  // { name: 'Aircraft Carrier', size: 5 },
-  // { name: 'Battleship', size: 4 },
-  // { name: 'Cruiser', size: 3 },
+  { name: 'Aircraft Carrier', size: 5 },
+  { name: 'Battleship', size: 4 },
+  { name: 'Cruiser', size: 3 },
   { name: 'Destoryer', size: 2 },
   { name: 'Submarine', size: 1 },
 ];

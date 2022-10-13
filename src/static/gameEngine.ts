@@ -1,4 +1,3 @@
-import React from 'react';
 import { playerBoardValues, opponentBoardValues } from './gameValues';
 
 const gameEngine = {
@@ -8,14 +7,6 @@ const gameEngine = {
       board.push(playerBoardValues.empty);
     }
     return board;
-  },
-  placeTestShips: (board: number[] | undefined) => {
-    let newBoard: number[] = [];
-    if (board) newBoard = [...board];
-    newBoard[0] = 1;
-    newBoard[10] = 1;
-    newBoard[20] = 1;
-    return newBoard;
   },
   changeCellValue(array: number[], cell: number, newValue: number) {
     let newArray = array.map((value, index) => {

@@ -30,7 +30,7 @@ const ServerListener = ({ socket, children }: ContextProps) => {
   }, [socket, game.data.playerBoard]);
   useEffect(() => {
     socket.on('game-over', () => {
-      game.updateData({ gameState: 'game-over', winner: game.data.clientId });
+      game.updateData({ gameState: 'game-over', winner: game.data.clientId, activeGame: false });
     });
   }, [game.data.clientId]);
   useEffect(() => {

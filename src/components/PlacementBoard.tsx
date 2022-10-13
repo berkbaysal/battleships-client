@@ -20,7 +20,7 @@ const PlacementBoard = () => {
   const game = useGameContext();
   const [placement, setPlacement] = useState<PlacementInterface>({
     ...INITIAL_PLACEMENT_STATE,
-    placementBoard: game.data.playerBoard ? game.data.playerBoard : [],
+    placementBoard: game.data.playerBoard,
   });
 
   const isThereCollision = gameEngine.checkCollision(game.data.playerBoard, placement.shipCells);
