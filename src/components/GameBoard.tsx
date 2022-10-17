@@ -1,6 +1,6 @@
 import { useGameContext } from '../context/GameContext';
 import gameEngine from '../static/gameEngine';
-import style from '../styles/Board.module.css';
+import style from '../styles/Board.module.scss';
 
 interface GameBoardProps {
   boardData: number[];

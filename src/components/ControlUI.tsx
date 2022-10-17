@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react';
 import { useGameContext } from '../context/GameContext';
-import gameEngine from '../static/gameEngine';
+import style from '../styles/Menu.module.scss';
+import HostMenu from './HostMenu';
+import MainMenu from './MainMenu';
+import WelcomeScreen from './WelcomeScreen';
 
 const ControlUI = () => {
   const game = useGameContext();
@@ -9,33 +12,40 @@ const ControlUI = () => {
   const [input, setInput] = useState('');
 
   return (
-    <div className="controls">
-      {' '}
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)}></input>
-      <button onClick={() => game.createRoom(input)} disabled={game.data.activeGame}>
-        create
-      </button>
-      <button onClick={() => game.joinRoom(input)} disabled={game.data.activeGame}>
-        join
-      </button>
-      <button
-        ref={startButton}
-        onClick={() => {
-          game.startGame(true);
-          startButton.current?.blur();
-        }}
-        disabled={game.data.activeGame}
-      >
-        start
-      </button>
-      <button
-        onClick={() => {
-          if (game.data.selectedCell !== null) game.attackCell(game.data.selectedCell);
-        }}
-        disabled={disabled}
-      >
-        attack
-      </button>
+    <div className={style.menuContainer}>
+      {game.data.activeMenu === 'welcome' && <WelcomeScreen />}
+      {game.data.activeMenu === 'main' && <MainMenu />}
+      {game.data.activeMenu === 'host' && <HostMenu />}
+
+      {game.data.activeMenu === 'gameover' && (
+        <>
+          <input type="text" value={input} onChange={(e) => setInput(e.target.value)}></input>
+          <button onClick={() => game.createRoom(input)} disabled={game.data.activeGame}>
+            create
+          </button>
+          <button onClick={() => game.joinRoom(input)} disabled={game.data.activeGame}>
+            join
+          </button>
+          <button
+            ref={startButton}
+            onClick={() => {
+              game.startGame(true);
+              startButton.current?.blur();
+            }}
+            disabled={game.data.activeGame}
+          >
+            start
+          </button>
+          <button
+            onClick={() => {
+              if (game.data.selectedCell !== null) game.attackCell(game.data.selectedCell);
+            }}
+            disabled={disabled}
+          >
+            attack
+          </button>
+        </>
+      )}
     </div>
   );
 };

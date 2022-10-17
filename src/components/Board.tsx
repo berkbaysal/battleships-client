@@ -1,4 +1,4 @@
-import style from '../styles/Board.module.css';
+import style from '../styles/Board.module.scss';
 import GameBoard from './GameBoard';
 import PlacementBoard from './PlacementBoard';
 

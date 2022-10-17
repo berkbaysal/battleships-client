@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import gameEngine from '../static/gameEngine';
-import style from '../styles/Board.module.css';
+import style from '../styles/Board.module.scss';
 import { ships } from '../static/gameValues';
 import { playerBoardValues } from '../static/gameValues';
 import { useGameContext } from '../context/GameContext';

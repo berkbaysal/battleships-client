@@ -21,6 +21,7 @@ interface ContextProps {
 
 const INIT_STATE: Game = {
   gameState: 'inactive',
+  activeMenu: 'welcome',
   opponentGameState: null,
   clientId: null,
   turn: '',

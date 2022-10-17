@@ -133,7 +133,7 @@ const gameEngine = {
       });
       newShipCells = shipCells.map((cell) => cell - boardSize * adjustmentAmount);
       return newShipCells;
-    } else if (currentOrientation == 'vertical' && shipCells.some((cell, index) => cell % boardSize === 0 && index !== 0)) {
+    } else if (currentOrientation === 'vertical' && shipCells.some((cell, index) => cell % boardSize === 0 && index !== 0)) {
       shipCells.forEach((cell, index) => {
         if (cell % boardSize === 0) {
           adjustmentAmount = shipCells.length - index;
