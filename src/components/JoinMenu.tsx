@@ -3,7 +3,7 @@ import { useGameContext } from '../context/GameContext';
 import style from '../styles/Menu.module.scss';
 import MenuButton from './MenuButton';
 
-const HostMenu = () => {
+const JoinMenu = () => {
   const game = useGameContext();
   const [roomName, setRoomName] = useState<string>('');
 
@@ -23,10 +23,9 @@ const HostMenu = () => {
         }}
       />
       <MenuButton
-        label="Create room"
+        label="Join room"
         action={() => {
-          game.createRoom(roomName);
-          game.updateData({ activeMenu: 'matchmaking' });
+          game.joinRoom(roomName);
         }}
         disabled={!isValidName()}
       />
@@ -34,4 +33,4 @@ const HostMenu = () => {
   );
 };
 
-export default HostMenu;
+export default JoinMenu;

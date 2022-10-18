@@ -32,6 +32,7 @@ const INIT_STATE: Game = {
   selectedCell: null,
   activeGame: false,
   winner: null,
+  clientIsHost: false,
 };
 
 const GameContextProvider = ({ children, socket }: ContextProps) => {
@@ -50,9 +51,13 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
   };
 
   const joinRoom = useCallback(
-    (roomName: string) => {
-      setGame((oldGame) => ({ ...oldGame, roomName: roomName }));
-      socket.emit('join-room', roomName);
+    async (roomName: string) => {
+      if (await gameEngine.checkIfRoomExists(roomName)) {
+        setGame((oldGame) => ({ ...oldGame, roomName: roomName, activeMenu: 'matchmaking' }));
+        socket.emit('join-room', roomName);
+      } else {
+        console.log('Room not found');
+      }
     },
     [socket]
   );

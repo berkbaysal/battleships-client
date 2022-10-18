@@ -2,7 +2,7 @@ import { Socket } from 'socket.io-client';
 
 export interface Game {
   gameState: 'placement' | 'active' | 'inactive' | 'waiting' | 'game-over';
-  activeMenu: 'welcome' | 'main' | 'createroom' | 'host' | 'join' | 'gameover';
+  activeMenu: 'welcome' | 'main' | 'createroom' | 'host' | 'matchmaking' | 'join' | 'gameover';
   opponentGameState: null | 'placement' | 'active' | 'waiting' | 'game-over';
   clientId: string | null;
   turn: string;
@@ -13,10 +13,11 @@ export interface Game {
   selectedCell: number | null;
   activeGame: boolean;
   winner: string | null;
+  clientIsHost: boolean;
 }
 export interface GameUpdate {
   gameState?: 'placement' | 'active' | 'inactive' | 'waiting' | 'game-over';
-  activeMenu?: 'welcome' | 'main' | 'createroom' | 'host' | 'join' | 'gameover';
+  activeMenu?: 'welcome' | 'main' | 'createroom' | 'host' | 'matchmaking' | 'join' | 'gameover';
   opponentGameState?: null | 'placement' | 'active' | 'waiting' | 'game-over';
   clientId?: string;
   turn?: string;
@@ -27,6 +28,7 @@ export interface GameUpdate {
   selectedCell?: number | null;
   activeGame?: boolean;
   winner?: string | null;
+  clientIsHost?: boolean;
 }
 
 export interface PlacementInterface {

@@ -1,4 +1,4 @@
-import { playerBoardValues, opponentBoardValues } from './gameValues';
+import { playerBoardValues, opponentBoardValues, server } from './gameValues';
 
 const gameEngine = {
   initBoard: (size = 10) => {
@@ -169,6 +169,15 @@ const gameEngine = {
   isGameLost(playerBoard: number[]) {
     return playerBoard.every((cell) => cell !== playerBoardValues.ship);
   },
+  async checkIfRoomExists(roomName: string) {
+    const res = await fetch(`${server}checkRoom?roomName=${roomName}`);
+    const json: ServerResponseRoomCheck = await res.json();
+    return json.roomExists;
+  },
 };
 
 export default gameEngine;
+
+interface ServerResponseRoomCheck {
+  roomExists: boolean;
+}

@@ -2,8 +2,10 @@ import { useRef, useState } from 'react';
 import { useGameContext } from '../context/GameContext';
 import style from '../styles/Menu.module.scss';
 import HostMenu from './HostMenu';
+import MatchmakingMenu from './MatchmakingMenu';
 import MainMenu from './MainMenu';
 import WelcomeScreen from './WelcomeScreen';
+import JoinMenu from './JoinMenu';
 
 const ControlUI = () => {
   const game = useGameContext();
@@ -16,6 +18,8 @@ const ControlUI = () => {
       {game.data.activeMenu === 'welcome' && <WelcomeScreen />}
       {game.data.activeMenu === 'main' && <MainMenu />}
       {game.data.activeMenu === 'host' && <HostMenu />}
+      {game.data.activeMenu === 'join' && <JoinMenu />}
+      {game.data.activeMenu === 'matchmaking' && <MatchmakingMenu />}
 
       {game.data.activeMenu === 'gameover' && (
         <>
