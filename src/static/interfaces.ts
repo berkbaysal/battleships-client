@@ -14,6 +14,7 @@ export interface Game {
   activeGame: boolean;
   winner: string | null;
   clientIsHost: boolean;
+  errorMessage: string;
 }
 export interface GameUpdate {
   gameState?: 'placement' | 'active' | 'inactive' | 'waiting' | 'game-over';
@@ -21,14 +22,15 @@ export interface GameUpdate {
   opponentGameState?: null | 'placement' | 'active' | 'waiting' | 'game-over';
   clientId?: string;
   turn?: string;
-  roomName?: string;
-  opponent?: string;
+  roomName?: string | null;
+  opponent?: string | null;
   playerBoard?: number[];
   opponentBoard?: number[];
   selectedCell?: number | null;
   activeGame?: boolean;
   winner?: string | null;
   clientIsHost?: boolean;
+  errorMessage?: string;
 }
 
 export interface PlacementInterface {
@@ -52,4 +54,5 @@ export interface GameContextInterface {
   handleAttack: (cell: number, socket: Socket) => void;
   attackCell: (cell: number) => void;
   completePlacement: () => void;
+  handleOpponentLeaving: () => void;
 }

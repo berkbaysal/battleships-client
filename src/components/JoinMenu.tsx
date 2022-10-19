@@ -12,16 +12,15 @@ const JoinMenu = () => {
     return true;
   }
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    game.updateData({ errorMessage: '' });
+    setRoomName(e.target.value);
+  }
+
   return (
     <div className={style.menuFrame}>
-      <input
-        type="text"
-        className={style.inputField}
-        value={roomName}
-        onChange={(e) => {
-          setRoomName(e.target.value);
-        }}
-      />
+      <input type="text" className={style.inputField} value={roomName} onChange={handleChange} />
+
       <MenuButton
         label="Join room"
         action={() => {
@@ -29,6 +28,7 @@ const JoinMenu = () => {
         }}
         disabled={!isValidName()}
       />
+      <div className={style.errorMessage}>{game.data.errorMessage}</div>
     </div>
   );
 };

@@ -44,6 +44,14 @@ const ServerListener = ({ socket, children }: ContextProps) => {
       }
     });
   }, [game.data.opponentBoard]);
+  useEffect(() => {
+    socket.on('opponent-left', () => {
+      game.handleOpponentLeaving();
+    });
+    return function removeListener() {
+      socket.off('opponent-left');
+    };
+  }, [socket, game.data.clientIsHost, game.data.activeGame]);
   return <>{children}</>;
 };
 

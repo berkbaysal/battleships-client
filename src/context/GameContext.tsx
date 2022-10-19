@@ -19,20 +19,33 @@ interface ContextProps {
   socket: Socket;
 }
 
-const INIT_STATE: Game = {
-  gameState: 'inactive',
-  activeMenu: 'welcome',
+const GAME_SOFT_RESET: GameUpdate = {
   opponentGameState: null,
-  clientId: null,
   turn: '',
-  roomName: null,
   opponent: null,
   playerBoard: [],
   opponentBoard: [],
   selectedCell: null,
   activeGame: false,
   winner: null,
+  errorMessage: '',
+};
+
+const INIT_STATE: Game = {
+  clientId: null,
+  roomName: null,
   clientIsHost: false,
+  gameState: 'inactive',
+  activeMenu: 'main',
+  opponentGameState: null,
+  turn: '',
+  opponent: null,
+  playerBoard: [],
+  opponentBoard: [],
+  selectedCell: null,
+  activeGame: false,
+  winner: null,
+  errorMessage: '',
 };
 
 const GameContextProvider = ({ children, socket }: ContextProps) => {
@@ -56,7 +69,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         setGame((oldGame) => ({ ...oldGame, roomName: roomName, activeMenu: 'matchmaking' }));
         socket.emit('join-room', roomName);
       } else {
-        console.log('Room not found');
+        updateData({ errorMessage: 'Room not found' });
       }
     },
     [socket]
@@ -116,6 +129,17 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
     [game.playerBoard]
   );
 
+  const handleOpponentLeaving = useCallback(() => {
+    if (game.activeGame) {
+      game.clientIsHost
+        ? updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'matchmaking' })
+        : updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'main', roomName: null });
+    } else {
+      console.log(game.clientIsHost);
+      game.clientIsHost ? updateData(GAME_SOFT_RESET) : updateData({ ...GAME_SOFT_RESET, activeMenu: 'main' });
+    }
+  }, [game.clientIsHost, game.activeGame]);
+
   return (
     <GameContext.Provider
       value={{
@@ -129,6 +153,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         attackCell: attackCell,
         handleAttack: handleAttack,
         completePlacement: completePlacement,
+        handleOpponentLeaving: handleOpponentLeaving,
       }}
     >
       {children}
