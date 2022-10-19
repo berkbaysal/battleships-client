@@ -36,7 +36,7 @@ const INIT_STATE: Game = {
   roomName: null,
   clientIsHost: false,
   gameState: 'inactive',
-  activeMenu: 'main',
+  activeMenu: 'welcome',
   opponentGameState: null,
   turn: '',
   opponent: null,

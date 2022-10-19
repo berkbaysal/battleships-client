@@ -31,7 +31,15 @@ const MatchmakingMenu = () => {
         </div>
         <div className={style.playerFrame}></div>
       </div>
-      {game.data.clientIsHost && <MenuButton label="Start game" action={() => {}} disabled={!opponentExists} />}
+      {game.data.clientIsHost && (
+        <MenuButton
+          label="Start game"
+          action={() => {
+            game.startGame(true);
+          }}
+          disabled={!opponentExists}
+        />
+      )}
       {!game.data.clientIsHost && <p className={style.footnote}>Waiting for host to start the game.</p>}
     </div>
   );

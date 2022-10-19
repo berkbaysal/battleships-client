@@ -1,3 +1,9 @@
+.boardUI {
+  text-align: center;
+  color: white;
+  font-weight: 600;
+}
+
 .boardContainer {
   display: flex;
   margin: 1rem;
@@ -6,6 +12,10 @@
 .board {
   display: grid;
   gap: 0;
+}
+
+.underBoardText {
+  margin-top: 3rem;
 }
 
 .cell {

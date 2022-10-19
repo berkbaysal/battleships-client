@@ -2,10 +2,11 @@ import './styles/App.scss';
 import Board from './components/Board';
 import ControlUI from './components/ControlUI';
 import { useGameContext } from './context/GameContext';
+import MenuButton from './components/MenuButton';
 
 function App() {
   const game = useGameContext();
-
+  const isItClientsTurn = game.data.clientId === game.data.turn;
   console.log(game.data);
   return (
     <div className="app-container">
@@ -18,12 +19,23 @@ function App() {
             </>
           )}
           {game.data.gameState === 'waiting' && (
-            <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}> Waiting for opponent...</div>
+            <div
+              style={{
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontWeight: '700',
+                fontSize: '1.5rem',
+              }}
+            >
+              Waiting for opponent...
+            </div>
           )}
           {game.data.gameState === 'active' && (
             <>
-              <Board boardData={game.data.playerBoard} boardType="player" />
               <Board boardData={game.data.opponentBoard} boardType="opponent" />
+              <Board boardData={game.data.playerBoard} boardType="player" />
             </>
           )}
           {game.data.gameState === 'game-over' && (
