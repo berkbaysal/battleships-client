@@ -6,9 +6,11 @@ import PlacementBoard from './PlacementBoard';
 interface BoardProps {
   boardData: number[];
   boardType: 'player' | 'opponent' | 'placement';
+  subTextTop?: string;
+  subTextBottom?: string;
 }
 
-const Board = ({ boardData, boardType }: BoardProps) => {
+const Board = ({ boardData, boardType, subTextTop, subTextBottom }: BoardProps) => {
   const cellsPerRow = Math.sqrt(boardData.length);
   const game = useGameContext();
 
@@ -20,7 +22,8 @@ const Board = ({ boardData, boardType }: BoardProps) => {
           {boardType !== 'placement' && <GameBoard boardData={boardData} boardType={boardType} />}
         </div>
       </div>
-      {game.data.gameState === 'placement' && <div className={style.underBoardText}>Place your pieces.</div>}
+      {subTextTop && <div className={style.subTextTop}>{subTextTop}</div>}
+      {subTextBottom && <div className={style.subTextBottom}>{subTextBottom}</div>}
     </div>
   );
 };
