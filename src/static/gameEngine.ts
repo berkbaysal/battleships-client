@@ -187,5 +187,3 @@ export default gameEngine;
 interface ServerResponseRoomCheck {
   roomExists: boolean;
 }
-
-//INTERNAL FUNCTIONS
