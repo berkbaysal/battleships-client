@@ -16,6 +16,12 @@ const JoinMenu = () => {
     game.updateData({ errorMessage: '' });
     setRoomName(e.target.value);
   }
+  function formatRoomName(roomName: string) {
+    let formattedString = roomName.toLowerCase();
+    formattedString = formattedString[0].toUpperCase() + formattedString.slice(1);
+    console.log(formattedString);
+    return formattedString;
+  }
 
   return (
     <div className={style.menuFrame}>
@@ -24,7 +30,7 @@ const JoinMenu = () => {
       <MenuButton
         label="Join room"
         action={() => {
-          game.joinRoom(roomName);
+          game.joinRoom(formatRoomName(roomName));
         }}
         disabled={!isValidName()}
       />

@@ -65,6 +65,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
 
   const joinRoom = useCallback(
     async (roomName: string) => {
+      roomName = gameEngine.formatRoomName(roomName);
       if (await gameEngine.checkIfRoomExists(roomName)) {
         setGame((oldGame) => ({ ...oldGame, roomName: roomName, activeMenu: 'matchmaking' }));
         socket.emit('join-room', roomName);
@@ -80,6 +81,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
 
   const createRoom = useCallback(
     (roomName: string) => {
+      roomName = gameEngine.formatRoomName(roomName);
       setGame((oldGame) => ({ ...oldGame, roomName: roomName }));
       socket.emit('create-room', roomName);
     },

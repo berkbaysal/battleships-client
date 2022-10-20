@@ -174,6 +174,12 @@ const gameEngine = {
     const json: ServerResponseRoomCheck = await res.json();
     return json.roomExists;
   },
+  formatRoomName(roomName: string) {
+    let formattedString = roomName.toLowerCase();
+    formattedString = formattedString[0].toUpperCase() + formattedString.slice(1);
+    console.log(formattedString);
+    return formattedString;
+  },
 };
 
 export default gameEngine;
@@ -181,3 +187,5 @@ export default gameEngine;
 interface ServerResponseRoomCheck {
   roomExists: boolean;
 }
+
+//INTERNAL FUNCTIONS
