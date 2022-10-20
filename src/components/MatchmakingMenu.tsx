@@ -15,22 +15,20 @@ const MatchmakingMenu = () => {
 
   return (
     <div className={style.menuFrame}>
-      <div className={style.playerFramesContainer}>
-        <div className={style.roomName}>Room name: {game.data.roomName}</div>
-        <div className={style.playerFrames}>
-          <div className={style.player}>
-            <img src={playerFound} alt="player-profile-pic" className={style.profilePicture} />
-            <div className={style.playerName}>You</div>
-          </div>
-          <div className={style.player}>
-            {opponentExists && (
-              <img src={opponentExists ? playerFound : noPlayerFound} alt="player-profile-pic" className={style.profilePicture} />
-            )}
-            <div className={style.playerName}>{opponentExists ? 'Opponent' : 'Waiting for opponent...'}</div>
-          </div>
+      <div className={style.roomName}>Room name: {game.data.roomName}</div>
+      <div className={style.playerFrames}>
+        <div className={style.player}>
+          <img src={playerFound} alt="player-profile-pic" className={style.profilePicture} />
+          <div className={style.playerName}>You</div>
         </div>
-        <div className={style.playerFrame}></div>
+        <div className={style.player}>
+          {opponentExists && (
+            <img src={opponentExists ? playerFound : noPlayerFound} alt="player-profile-pic" className={style.profilePicture} />
+          )}
+          <div className={style.playerName}>{opponentExists ? 'Opponent' : 'Waiting for opponent...'}</div>
+        </div>
       </div>
+      <div className={style.playerFrame}></div>
       {game.data.clientIsHost && (
         <MenuButton
           label="Start game"
@@ -38,6 +36,7 @@ const MatchmakingMenu = () => {
             game.startGame(true);
           }}
           disabled={!opponentExists}
+          styleOverride={{ gridColumn: '13/21', gridRow: '14/17' }}
         />
       )}
       {!game.data.clientIsHost && <p className={style.footnote}>Waiting for host to start the game.</p>}

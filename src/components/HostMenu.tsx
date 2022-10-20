@@ -29,6 +29,7 @@ const HostMenu = () => {
           game.updateData({ activeMenu: 'matchmaking' });
         }}
         disabled={!isValidName()}
+        styleOverride={{ gridColumn: '13/21', gridRow: '10/12' }}
       />
     </div>
   );

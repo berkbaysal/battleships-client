@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGameContext } from '../context/GameContext';
 import style from '../styles/Menu.module.scss';
 import MenuButton from './MenuButton';
+import logo from '../assets/logo.png';
 
 const JoinMenu = () => {
   const game = useGameContext();
@@ -27,6 +28,7 @@ const JoinMenu = () => {
           game.joinRoom(roomName);
         }}
         disabled={!isValidName()}
+        styleOverride={{ gridColumn: '13/21', gridRow: '10/12' }}
       />
       <div className={style.errorMessage}>{game.data.errorMessage}</div>
     </div>

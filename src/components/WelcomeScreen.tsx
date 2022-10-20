@@ -13,6 +13,7 @@ const WelcomeScreen = () => {
         action={() => {
           game.updateData({ activeMenu: 'main' });
         }}
+        styleOverride={{ gridColumn: '14/20', gridRow: '10/12' }}
       />
     </div>
   );

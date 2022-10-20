@@ -1,16 +1,19 @@
 .menuFrame {
-  width: 500px;
-  height: 500px;
-  display: flex;
+  width: 1200px;
+  height: 600px;
+  display: grid;
+  //background-color: lightgoldenrodyellow;
+  grid-template-columns: repeat(32, 1fr);
+  grid-template-rows: repeat(16, 1fr);
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   position: relative;
 }
 .menuLogo {
   max-height: 100%;
   max-width: 100%;
-  padding: 3rem;
+  grid-column: 10/24;
+  grid-row: 5/10;
 }
 .menuButton {
   border: 3px solid #e2f8ff;
@@ -29,16 +32,15 @@
 .menuButton:hover {
   filter: brightness(1.1);
 }
-.menuButton:not(:first-of-type) {
-  margin-top: 2rem;
-}
 .inputField {
   height: 2rem;
   font-size: 2rem;
   border-radius: 0.5rem;
   text-indent: 0.5rem;
   padding: 0.5rem;
-  margin-bottom: 2rem;
+  grid-column: 13/21;
+  min-width: 1rem;
+  grid-row: 7/9;
 }
 
 .menuButtonDisabled {
@@ -55,10 +57,16 @@
   font-weight: 700;
   color: white;
   margin-bottom: 1rem;
+  grid-column: 13/21;
+  grid-row: 1/3;
 }
 
 .playerFrames {
   display: flex;
+  justify-content: center;
+  height: 100%;
+  grid-column: 1 / 33;
+  grid-row: 3/14;
 }
 
 .playerFramesContainer {
@@ -95,16 +103,21 @@
 }
 
 .errorMessage {
-  position: absolute;
+  text-align: center;
   bottom: 20%;
   font-size: 1.5rem;
   font-weight: 600;
   color: white;
+  grid-column: 13/21;
+  grid-row: 13/14;
 }
 
 .footnote {
+  text-align: center;
   padding: 0.5rem;
   font-size: 1.25rem;
   font-weight: 500;
   color: white;
+  grid-column: 1/33;
+  grid-row: 14/17;
 }
