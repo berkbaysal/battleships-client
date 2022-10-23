@@ -1,8 +1,6 @@
 import './styles/App.scss';
-import Board from './components/Board';
 import ControlUI from './components/ControlUI';
 import { useGameContext } from './context/GameContext';
-import MenuButton from './components/MenuButton';
 import GameUI from './components/GameUI';
 
 function App() {

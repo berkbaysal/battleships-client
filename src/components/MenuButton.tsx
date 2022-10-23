@@ -6,11 +6,16 @@ interface MenuButtonProps {
   action: () => void;
   styleOverride?: React.CSSProperties;
   disabled?: boolean;
+  className?: string;
 }
 
-const MenuButton = ({ label, action, styleOverride, disabled = false }: MenuButtonProps) => {
+const MenuButton = ({ label, action, styleOverride, disabled = false, className = '' }: MenuButtonProps) => {
   return (
-    <div className={disabled ? style.menuButtonDisabled : style.menuButton} style={{ ...styleOverride }} onClick={() => action()}>
+    <div
+      className={`${disabled ? style.menuButtonDisabled : style.menuButton} ${className}`}
+      style={{ ...styleOverride }}
+      onClick={() => action()}
+    >
       {label}
     </div>
   );

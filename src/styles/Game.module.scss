@@ -1,13 +1,22 @@
 .gameContainer {
-  display: flex;
-  flex-direction: column;
-  width: 500px;
-  height: 500px;
+  width: 1200px;
+  height: 600px;
+  display: grid;
+  //background-color: lightgoldenrodyellow;
+  grid-template-columns: repeat(32, 1fr);
+  grid-template-rows: repeat(16, 1fr);
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .gameBoards {
-  display: flex;
+  grid-column: 2/32;
+  grid-row: 2/14;
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(12, 1fr);
 }
 .waitingScreen {
   display: flex;
@@ -16,4 +25,10 @@
   color: white;
   font-weight: 700;
   font-size: 1.5rem;
+  grid-column: 2/32;
+  grid-row: 2/16;
+}
+.gameButton {
+  grid-column: 13/21;
+  grid-row: 14/16;
 }

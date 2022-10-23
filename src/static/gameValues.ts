@@ -18,5 +18,5 @@ const ships = [
   { name: 'Destoryer', size: 2 },
   { name: 'Submarine', size: 1 },
 ];
-const server = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/' : 'http://battleships-364108.ew.r.appspot.com/';
+const server = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
 export { playerBoardValues, opponentBoardValues, ships, server };

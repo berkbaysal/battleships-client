@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGameContext } from '../context/GameContext';
 import style from '../styles/Menu.module.scss';
 import MenuButton from './MenuButton';
+import { IoArrowBackCircleSharp } from 'react-icons/io5';
 
 const HostMenu = () => {
   const game = useGameContext();
@@ -31,6 +32,10 @@ const HostMenu = () => {
         disabled={!isValidName()}
         styleOverride={{ gridColumn: '13/21', gridRow: '10/12' }}
       />
+      <div className={style.backButton} onClick={() => game.updateData({ activeMenu: 'main', errorMessage: '' })}>
+        <IoArrowBackCircleSharp className={style.backButtonIcon} />
+        &nbsp;Back
+      </div>
     </div>
   );
 };

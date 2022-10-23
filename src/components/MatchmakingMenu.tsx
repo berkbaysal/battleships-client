@@ -4,6 +4,7 @@ import MenuButton from './MenuButton';
 import playerFound from '../assets/playerFound.png';
 import noPlayerFound from '../assets/noPlayerFound.png';
 import { useEffect, useState } from 'react';
+import { IoArrowBackCircleSharp } from 'react-icons/io5';
 
 const MatchmakingMenu = () => {
   const game = useGameContext();
@@ -36,10 +37,14 @@ const MatchmakingMenu = () => {
             game.startGame(true);
           }}
           disabled={!opponentExists}
-          styleOverride={{ gridColumn: '13/21', gridRow: '14/17' }}
+          styleOverride={{ gridColumn: '13/21', gridRow: '13/15' }}
         />
       )}
       {!game.data.clientIsHost && <p className={style.footnote}>Waiting for host to start the game.</p>}
+      <div className={style.backButton} onClick={() => game.leaveRoom()}>
+        <IoArrowBackCircleSharp className={style.backButtonIcon} />
+        &nbsp;Back
+      </div>
     </div>
   );
 };

@@ -1,31 +1,61 @@
 .boardUI {
   text-align: center;
   color: white;
+  grid-row: 1/13;
   font-weight: 600;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: repeat(12, 1fr);
 }
 
 .boardContainer {
-  display: flex;
-  margin: 1rem;
+  grid-column: 3/13;
+  grid-row: 1/11;
+  justify-content: center;
+  height: 100%;
+}
+.leftBoard {
+  @extend .boardUI;
+  grid-column: 2/16;
+}
+.rightBoard {
+  @extend .boardUI;
+  grid-column: 16/30;
+}
+.centerBoard {
+  @extend .boardUI;
+  grid-column: 9/23;
 }
 
 .board {
   display: grid;
   gap: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.subText {
+  grid-column: 1/17;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
 }
 
 .subTextTop {
-  margin-top: 1.5rem;
+  @extend .subText;
   font-size: 1.25rem;
+  grid-row: 11/11;
 }
 .subTextBottom {
-  margin-top: 1rem;
+  @extend .subText;
   font-weight: 500;
+  grid-row: 12/12;
 }
 
 .cell {
-  width: 2rem;
-  height: 2rem;
+  width: auto;
+  height: 100%;
   border: 1px solid black;
   display: flex;
   align-items: center;

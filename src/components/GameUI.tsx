@@ -1,4 +1,5 @@
 import { useGameContext } from '../context/GameContext';
+import boardStyle from '../styles/Board.module.scss';
 import style from '../styles/Game.module.scss';
 import Board from './Board';
 import MenuButton from './MenuButton';
@@ -16,13 +17,23 @@ const GameUI = () => {
               boardType="placement"
               subTextTop="Place your ships."
               subTextBottom="Use arrow keys to move, R to rotate, Enter to place."
+              className={boardStyle.centerBoard}
             />
           )}
-          {game.data.gameState === 'waiting' && <div className={style.waitingScreen}>Waiting for opponent...</div>}
           {game.data.gameState === 'active' && (
             <>
-              <Board boardData={game.data.opponentBoard} boardType="opponent" subTextTop="Opponents Board" />
-              <Board boardData={game.data.playerBoard} boardType="player" subTextTop="Your Board" />
+              <Board
+                boardData={game.data.opponentBoard}
+                boardType="opponent"
+                subTextTop="Opponents Board"
+                className={boardStyle.leftBoard}
+              />
+              <Board
+                boardData={game.data.playerBoard}
+                boardType="player"
+                subTextTop="Your Board"
+                className={boardStyle.rightBoard}
+              />
             </>
           )}
           {game.data.gameState === 'game-over' && (
@@ -35,15 +46,18 @@ const GameUI = () => {
           )}
         </div>
       )}
-
-      <MenuButton
-        label={isClientsTurn ? 'Attack' : 'Opponents Turn'}
-        action={() => {
-          if (game.data.selectedCell !== null) game.attackCell(game.data.selectedCell);
-        }}
-        styleOverride={{ width: '15rem', marginTop: '3rem' }}
-        disabled={!isClientsTurn}
-      />
+      {game.data.gameState === 'waiting' && <div className={style.waitingScreen}>Waiting for opponent...</div>}
+      {game.data.gameState === 'active' && (
+        <MenuButton
+          label={isClientsTurn ? 'Attack' : 'Opponents Turn'}
+          action={() => {
+            if (game.data.selectedCell !== null) game.attackCell(game.data.selectedCell);
+          }}
+          styleOverride={{ width: '15rem', marginTop: '3rem' }}
+          disabled={!isClientsTurn}
+          className={style.gameButton}
+        />
+      )}
     </div>
   );
 };

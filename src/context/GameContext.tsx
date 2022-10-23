@@ -137,10 +137,14 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         ? updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'matchmaking' })
         : updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'main', roomName: null });
     } else {
-      console.log(game.clientIsHost);
       game.clientIsHost ? updateData(GAME_SOFT_RESET) : updateData({ ...GAME_SOFT_RESET, activeMenu: 'main' });
     }
   }, [game.clientIsHost, game.activeGame]);
+
+  const leaveRoom = useCallback(() => {
+    if (game.opponent !== null) socket.emit('player-left', { opponent: game.opponent, roomName: game.roomName });
+    updateData({ ...GAME_SOFT_RESET, activeMenu: 'main', roomName: null, clientIsHost: false });
+  }, []);
 
   return (
     <GameContext.Provider
@@ -156,6 +160,7 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
         handleAttack: handleAttack,
         completePlacement: completePlacement,
         handleOpponentLeaving: handleOpponentLeaving,
+        leaveRoom: leaveRoom,
       }}
     >
       {children}

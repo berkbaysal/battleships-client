@@ -8,14 +8,15 @@ interface BoardProps {
   boardType: 'player' | 'opponent' | 'placement';
   subTextTop?: string;
   subTextBottom?: string;
+  className?: string;
 }
 
-const Board = ({ boardData, boardType, subTextTop, subTextBottom }: BoardProps) => {
+const Board = ({ boardData, boardType, subTextTop, subTextBottom, className = '' }: BoardProps) => {
   const cellsPerRow = Math.sqrt(boardData.length);
   const game = useGameContext();
 
   return (
-    <div className={style.boardUI}>
+    <div className={className}>
       <div className={style.boardContainer}>
         <div className={style.board} style={{ gridTemplateColumns: `repeat(${cellsPerRow},1fr)` }}>
           {boardType === 'placement' && <PlacementBoard />}

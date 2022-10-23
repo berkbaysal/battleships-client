@@ -55,4 +55,5 @@ export interface GameContextInterface {
   attackCell: (cell: number) => void;
   completePlacement: () => void;
   handleOpponentLeaving: () => void;
+  leaveRoom: () => void;
 }
