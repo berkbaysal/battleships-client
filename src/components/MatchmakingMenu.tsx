@@ -43,7 +43,7 @@ const MatchmakingMenu = () => {
       {!game.data.clientIsHost && <p className={style.footnote}>Waiting for host to start the game.</p>}
       <div className={style.backButton} onClick={() => game.leaveRoom()}>
         <IoArrowBackCircleSharp className={style.backButtonIcon} />
-        &nbsp;Back
+        &nbsp;Leave Room
       </div>
     </div>
   );

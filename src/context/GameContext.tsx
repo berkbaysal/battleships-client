@@ -143,8 +143,9 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
 
   const leaveRoom = useCallback(() => {
     if (game.opponent !== null) socket.emit('player-left', { opponent: game.opponent, roomName: game.roomName });
+    if (game.clientIsHost) socket.emit('clean-room', { roomName: game.roomName });
     updateData({ ...GAME_SOFT_RESET, activeMenu: 'main', roomName: null, clientIsHost: false });
-  }, []);
+  }, [game.opponent, game.roomName]);
 
   return (
     <GameContext.Provider
