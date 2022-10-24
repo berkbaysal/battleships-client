@@ -132,14 +132,14 @@ const GameContextProvider = ({ children, socket }: ContextProps) => {
   );
 
   const handleOpponentLeaving = useCallback(() => {
-    if (game.activeGame) {
-      game.clientIsHost
-        ? updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'matchmaking' })
-        : updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'main', roomName: null });
+    console.log(game.roomName);
+    if (game.clientIsHost) {
+      updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'matchmaking' });
     } else {
-      game.clientIsHost ? updateData(GAME_SOFT_RESET) : updateData({ ...GAME_SOFT_RESET, activeMenu: 'main' });
+      socket.emit('clean-room', { roomName: game.roomName });
+      updateData({ ...GAME_SOFT_RESET, gameState: 'inactive', activeMenu: 'main', roomName: null });
     }
-  }, [game.clientIsHost, game.activeGame]);
+  }, [game.clientIsHost, game.activeGame, game.roomName]);
 
   const leaveRoom = useCallback(() => {
     if (game.opponent !== null) socket.emit('player-left', { opponent: game.opponent, roomName: game.roomName });
