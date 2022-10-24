@@ -1,4 +1,5 @@
 import { playerBoardValues, opponentBoardValues, server } from './gameValues';
+import sprites from './sprites';
 
 const gameEngine = {
   initBoard: (size = 10) => {
@@ -18,21 +19,23 @@ const gameEngine = {
     });
     return newArray;
   },
-  getCellStyle(boardType: 'player' | 'opponent', cellValue: number, collision: boolean = false) {
-    let style = { backgroundColor: '' };
+  getCellStyle(
+    boardType: 'player' | 'opponent',
+    cellValue: number,
+    collision: boolean = false,
+    orientation: 'vertical' | 'horizontal' = 'vertical'
+  ) {
+    let style: React.CSSProperties = {};
 
     if (boardType === 'player') {
       switch (cellValue) {
         case playerBoardValues.empty:
           style.backgroundColor = 'blue';
           break;
-        case playerBoardValues.ship:
-          style.backgroundColor = 'gray';
-          break;
-        case playerBoardValues.placingShip:
+        case 999: //playerBoardValues.placingShip:
           style.backgroundColor = collision ? 'red' : 'yellow';
           break;
-        case playerBoardValues.placingShipCollides:
+        case 999: //playerBoardValues.placingShipCollides:
           style.backgroundColor = 'red';
           break;
         case playerBoardValues.shipWreck:
@@ -41,6 +44,8 @@ const gameEngine = {
         case playerBoardValues.missedShot:
           style.backgroundColor = 'yellow';
           break;
+        default:
+          style = this.spriteStyleConstructor(cellValue, orientation);
       }
     } else {
       switch (cellValue) {
@@ -145,10 +150,12 @@ const gameEngine = {
       return shipCells;
     }
   },
-  placeShips(board: number[], shipCells: number[]) {
+  placeShips(board: number[], shipCells: number[], currentShipIndex: number) {
+    const shipValues = playerBoardValues.ship[currentShipIndex].values;
+    let shipCellIndex = 0;
     let newBoard = board.map((cell, index) => {
       if (shipCells.includes(index)) {
-        return playerBoardValues.ship;
+        return shipValues[shipCellIndex++];
       } else {
         return cell;
       }
@@ -167,7 +174,7 @@ const gameEngine = {
     return collision;
   },
   isGameLost(playerBoard: number[]) {
-    return playerBoard.every((cell) => cell !== playerBoardValues.ship);
+    return playerBoard.every((cell) => !this.getValidShipValues().includes(cell));
   },
   async checkIfRoomExists(roomName: string) {
     const res = await fetch(`${server}checkRoom?roomName=${roomName}`);
@@ -179,6 +186,34 @@ const gameEngine = {
     formattedString = formattedString[0].toUpperCase() + formattedString.slice(1);
     console.log(formattedString);
     return formattedString;
+  },
+  spriteStyleConstructor(code: number, orientation: 'vertical' | 'horizontal') {
+    const rotated = orientation === 'horizontal';
+    let part = 0;
+    let shipName = '';
+    if (this.getValidPlacingShipValues().includes(code)) {
+      playerBoardValues.placingShip.forEach((shipType, index) => {
+        if (shipType.values.includes(code)) {
+          shipName = shipType.shipName;
+          shipType.values.forEach((value, index) => {
+            if (value === code) part = index;
+          });
+        }
+      });
+      let shipParts = sprites.filter((shipType) => shipType.shipName === shipName)[0].parts;
+      return { backgroundImage: `url(${shipParts[part]})`, transform: `rotate(${rotated ? '-90deg' : '0deg'})` };
+    }
+    return {};
+  },
+  getValidShipValues() {
+    let validShipValues: number[] = [];
+    playerBoardValues.ship.forEach((shipType) => shipType.values.forEach((value) => validShipValues.push(value)));
+    return validShipValues;
+  },
+  getValidPlacingShipValues() {
+    let placingShipValues: number[] = [];
+    playerBoardValues.placingShip.forEach((shipType) => shipType.values.forEach((value) => placingShipValues.push(value)));
+    return placingShipValues;
   },
 };
 

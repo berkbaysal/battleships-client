@@ -4,6 +4,8 @@ import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
 import { playerBoardValues } from '../static/gameValues';
 
+const DEBUG_MODE = true;
+
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
 function useGameContext() {
@@ -48,8 +50,25 @@ const INIT_STATE: Game = {
   errorMessage: '',
 };
 
+const TEST_INIT: Game = {
+  clientId: null,
+  roomName: 'test',
+  clientIsHost: true,
+  gameState: 'placement',
+  activeMenu: 'welcome',
+  opponentGameState: 'placement',
+  turn: '',
+  opponent: null,
+  playerBoard: gameEngine.initBoard(),
+  opponentBoard: gameEngine.initBoard(),
+  selectedCell: null,
+  activeGame: true,
+  winner: null,
+  errorMessage: '',
+};
+
 const GameContextProvider = ({ children, socket }: ContextProps) => {
-  const [game, setGame] = useState<Game>(INIT_STATE);
+  const [game, setGame] = useState<Game>(DEBUG_MODE ? TEST_INIT : INIT_STATE);
 
   const updateData = (data: GameUpdate) => {
     setGame((oldGame) => ({ ...oldGame, ...data }));

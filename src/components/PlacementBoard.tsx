@@ -60,7 +60,7 @@ const PlacementBoard = () => {
     //HANDLE SELECTION
     else if (e.key === 'Enter') {
       if (isThereCollision) return;
-      const updatedBoard = gameEngine.placeShips(placement.placementBoard, placement.shipCells);
+      const updatedBoard = gameEngine.placeShips(placement.placementBoard, placement.shipCells, placement.currentShipIndex);
       if (placement.currentShipIndex + 1 === ships.length) {
         //CHECK IF ITS LAST SHIP BEING PLACED, START GAME IF IT IS
         game.updateData({ playerBoard: [...updatedBoard] });
@@ -74,17 +74,22 @@ const PlacementBoard = () => {
 
   //USE NEW SHIPCELLS DATA TO UPDATE LOCAL STATE
   function updatePlacementBoard(shipCells: number[]) {
-    setPlacement((oldBoard) => ({
-      ...oldBoard,
-      placementBoard: oldBoard.placementBoard.map((cell, index) => {
-        if (shipCells.includes(index)) {
-          return playerBoardValues.placingShip;
-        } else if (!shipCells.includes(index) && cell === playerBoardValues.placingShip && game.data.playerBoard) {
-          return game.data.playerBoard[index];
-        } else {
-          return cell;
-        }
-      }),
+    let currentShipPart = 0;
+    const shipCodes = playerBoardValues.placingShip[placement.currentShipIndex].values;
+    const newBoard = placement.placementBoard.map((cell, index) => {
+      //if index cell is currently being placed
+      if (shipCells.includes(index)) {
+        return shipCodes[currentShipPart++];
+      } else if (!shipCells.includes(index) && gameEngine.getValidPlacingShipValues().includes(cell)) {
+        return game.data.playerBoard[index];
+      } else {
+        return cell;
+      }
+    });
+
+    setPlacement((oldData) => ({
+      ...oldData,
+      placementBoard: newBoard,
     }));
   }
 
@@ -126,6 +131,7 @@ const PlacementBoard = () => {
     return () => document.removeEventListener('keydown', handleKeydown);
   }, [placement.orientation, placement.currentShipIndex, placement.placementBoard, placement.shipCells, game.data.playerBoard]);
 
+  console.log(placement.placementBoard);
   return (
     <>
       {placement.placementBoard.map((cellValue, index) => {
@@ -133,7 +139,7 @@ const PlacementBoard = () => {
           <div
             className={`${style.cell}`}
             key={'cell-' + index}
-            style={{ ...gameEngine.getCellStyle('player', cellValue, isThereCollision) }}
+            style={{ ...gameEngine.getCellStyle('player', cellValue, isThereCollision, placement.orientation) }}
           ></div>
         );
       })}
