@@ -37,5 +37,5 @@ const ships = [
   { name: 'Patrol Boat', size: 1 },
 ];
 
-const server = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
+const server = process.env.NODE_ENV === 'development' ? 'localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
 export { playerBoardValues, opponentBoardValues, ships, server };

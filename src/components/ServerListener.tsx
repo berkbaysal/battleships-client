@@ -51,7 +51,7 @@ const ServerListener = ({ socket, children }: ContextProps) => {
     return function removeListener() {
       socket.off('opponent-left');
     };
-  }, [socket, game.data.clientIsHost, game.data.activeGame]);
+  }, [socket, game.data.clientIsHost, game.data.activeGame, game.data.roomName]);
   return <>{children}</>;
 };
 
