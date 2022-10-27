@@ -57,3 +57,8 @@ export interface GameContextInterface {
   handleOpponentLeaving: () => void;
   leaveRoom: () => void;
 }
+
+export interface ShipValues {
+  shipName: string;
+  values: number[];
+}

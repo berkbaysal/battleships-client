@@ -1,5 +1,6 @@
 import { playerBoardValues, opponentBoardValues, server } from './gameValues';
 import sprites from './sprites';
+import { ShipValues } from './interfaces';
 
 const gameEngine = {
   initBoard: (size = 10) => {
@@ -160,6 +161,7 @@ const gameEngine = {
         return cell;
       }
     });
+    console.log(newBoard);
     return newBoard;
   },
   checkCollision(board: number[], shipCells: number[]) {
@@ -191,8 +193,17 @@ const gameEngine = {
     const rotated = orientation === 'horizontal';
     let part = 0;
     let shipName = '';
-    if (this.getValidPlacingShipValues().includes(code)) {
-      playerBoardValues.placingShip.forEach((shipType, index) => {
+    let relevantValues: null | ShipValues[] = null;
+    let placementStage = false;
+
+    if (this.getValidShipValues().includes(code)) relevantValues = playerBoardValues.ship;
+    else if (this.getValidPlacingShipValues().includes(code)) {
+      relevantValues = playerBoardValues.placingShip;
+      placementStage = true;
+    }
+
+    if (relevantValues !== null) {
+      relevantValues.forEach((shipType) => {
         if (shipType.values.includes(code)) {
           shipName = shipType.shipName;
           shipType.values.forEach((value, index) => {
@@ -201,7 +212,10 @@ const gameEngine = {
         }
       });
       let shipParts = sprites.filter((shipType) => shipType.shipName === shipName)[0].parts;
-      return { backgroundImage: `url(${shipParts[part]})`, transform: `rotate(${rotated ? '-90deg' : '0deg'})` };
+      return {
+        backgroundImage: `url(${shipParts[part]})`,
+        transform: placementStage ? `rotate(${rotated ? '-90deg' : '0deg'})` : '',
+      };
     }
     return {};
   },
@@ -214,6 +228,9 @@ const gameEngine = {
     let placingShipValues: number[] = [];
     playerBoardValues.placingShip.forEach((shipType) => shipType.values.forEach((value) => placingShipValues.push(value)));
     return placingShipValues;
+  },
+  getAllValidShipValues() {
+    return [...this.getValidShipValues(), ...this.getValidPlacingShipValues()];
   },
 };
 
