@@ -1,5 +1,7 @@
 import { useGameContext } from '../context/GameContext';
 import style from '../styles/Board.module.scss';
+import BackgroundLayer from './BoardLayers/BackgroundLayer';
+import PlacementLayer from './BoardLayers/PlacementLayer';
 import GameBoard from './GameBoard';
 import PlacementBoard from './PlacementBoard';
 
@@ -12,15 +14,14 @@ interface BoardProps {
 }
 
 const Board = ({ boardData, boardType, subTextTop, subTextBottom, className = '' }: BoardProps) => {
-  const cellsPerRow = Math.sqrt(boardData.length);
-  const game = useGameContext();
-
   return (
     <div className={className}>
       <div className={style.boardContainer}>
-        <div className={style.board} style={{ gridTemplateColumns: `repeat(${cellsPerRow},1fr)` }}>
-          {boardType === 'placement' && <PlacementBoard />}
-          {boardType !== 'placement' && <GameBoard boardData={boardData} boardType={boardType} />}
+        <div className={style.board}>
+          <BackgroundLayer />
+          <PlacementLayer />
+          {/* {boardType === 'placement' && <PlacementBoard />}
+          {boardType !== 'placement' && <GameBoard boardData={boardData} boardType={boardType} />} */}
         </div>
       </div>
       {subTextTop && <div className={style.subTextTop}>{subTextTop}</div>}

@@ -67,16 +67,15 @@ const gameEngine = {
   calculatePlacementShift(
     input: string,
     orientation: 'vertical' | 'horizontal',
-    board: number[],
+    boardSize: number,
     originCell: number,
     size: number
   ) {
-    const boardSize = Math.sqrt(board.length);
     let newOriginCell: number;
     switch (input) {
       case 'ArrowDown':
         newOriginCell = originCell + boardSize;
-        if (newOriginCell > board.length - 1) {
+        if (newOriginCell > Math.pow(boardSize, 2) - 1) {
           newOriginCell = originCell;
         }
         break;
@@ -111,11 +110,10 @@ const gameEngine = {
         shipCells.push(newOriginCell + i * boardSize);
       }
     }
-    if (shipCells.some((cell) => cell > board.length - 1)) return null;
+    if (shipCells.some((cell) => cell > Math.pow(boardSize, 2) - 1)) return null;
     else return shipCells;
   },
-  swapOrientationOfShipCells(shipCells: number[], board: number[], currentOrientation: 'vertical' | 'horizontal') {
-    const boardSize = Math.sqrt(board.length);
+  swapOrientationOfShipCells(shipCells: number[], boardSize: number, currentOrientation: 'vertical' | 'horizontal') {
     const originCell = shipCells[0];
     let newShipCells = [];
     if (currentOrientation === 'vertical') {
@@ -127,15 +125,14 @@ const gameEngine = {
         newShipCells.push(originCell + i * boardSize);
       }
     }
-    return this.adjustForOutOfBounds(newShipCells, board, currentOrientation);
+    return this.adjustForOutOfBounds(newShipCells, boardSize, currentOrientation);
   },
-  adjustForOutOfBounds(shipCells: number[], board: number[], currentOrientation: 'vertical' | 'horizontal') {
-    const boardSize = Math.sqrt(board.length);
+  adjustForOutOfBounds(shipCells: number[], boardSize: number, currentOrientation: 'vertical' | 'horizontal') {
     let newShipCells: number[] = [];
     let adjustmentAmount = 0;
-    if (currentOrientation === 'horizontal' && shipCells.some((cell) => cell >= board.length)) {
+    if (currentOrientation === 'horizontal' && shipCells.some((cell) => cell >= Math.pow(boardSize, 2))) {
       shipCells.forEach((cell) => {
-        if (cell >= board.length) adjustmentAmount++;
+        if (cell >= Math.pow(boardSize, 2)) adjustmentAmount++;
       });
       newShipCells = shipCells.map((cell) => cell - boardSize * adjustmentAmount);
       return newShipCells;

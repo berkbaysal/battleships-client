@@ -31,7 +31,7 @@ const PlacementBoard = () => {
       const newShipCells = gameEngine.calculatePlacementShift(
         e.key,
         placement.orientation,
-        placement.placementBoard,
+        placement.placementBoard.length,
         placement.originCell,
         placement.size
       );
@@ -45,7 +45,7 @@ const PlacementBoard = () => {
     else if (e.key === 'r') {
       const newShipCells = gameEngine.swapOrientationOfShipCells(
         placement.shipCells,
-        placement.placementBoard,
+        placement.placementBoard.length,
         placement.orientation
       );
       setPlacement((oldData) => ({

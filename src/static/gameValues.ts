@@ -1,3 +1,14 @@
+import aircraftCarrier from '../assets/gameSprites/aircraftCarrier.png';
+import battleship from '../assets/gameSprites/battleship.png';
+import destoryer from '../assets/gameSprites/destroyer.png';
+import submarine from '../assets/gameSprites/submarine.png';
+import patrolBoat from '../assets/gameSprites/patrolBoat.png';
+import aircraftCarrierHorizontal from '../assets/gameSprites/aircraftCarrier_hor.png';
+import battleshipHorizontal from '../assets/gameSprites/battleship_hor.png';
+import destoryerHorizontal from '../assets/gameSprites/destroyer_hor.png';
+import submarineHorizontal from '../assets/gameSprites/submarine_hor.png';
+import patrolBoatHorizontal from '../assets/gameSprites/patrolBoat_hor.png';
+
 const playerBoardValues = {
   empty: 0,
   ship: [
@@ -36,6 +47,14 @@ const ships = [
   { name: 'Submarine', size: 2 },
   { name: 'Patrol Boat', size: 1 },
 ];
+const spritesVertical = [aircraftCarrier, battleship, destoryer, submarine, patrolBoat];
+const spritesHorizontal = [
+  aircraftCarrierHorizontal,
+  battleshipHorizontal,
+  destoryerHorizontal,
+  submarineHorizontal,
+  patrolBoatHorizontal,
+];
 
 const server = process.env.NODE_ENV === 'development' ? 'localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
-export { playerBoardValues, opponentBoardValues, ships, server };
+export { playerBoardValues, opponentBoardValues, ships, server, spritesHorizontal, spritesVertical };
