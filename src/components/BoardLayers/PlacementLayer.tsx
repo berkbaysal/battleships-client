@@ -117,11 +117,15 @@ const PlacementLayer = () => {
         <img
           src={spritesHorizontal[placement.currentShipIndex]}
           style={calculateGridPosition()}
-          className={style.placementImage}
+          className={style.placingShipSprite}
         />
       )}
       {placement.orientation === 'vertical' && (
-        <img src={spritesVertical[placement.currentShipIndex]} style={calculateGridPosition()} className={style.placementImage} />
+        <img
+          src={spritesVertical[placement.currentShipIndex]}
+          style={calculateGridPosition()}
+          className={style.placingShipSprite}
+        />
       )}
     </div>
   );
