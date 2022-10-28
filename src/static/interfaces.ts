@@ -15,6 +15,7 @@ export interface Game {
   winner: string | null;
   clientIsHost: boolean;
   errorMessage: string;
+  placedShips: { orientation: 'vertical' | 'horizontal'; placementStyle: React.CSSProperties }[];
 }
 export interface GameUpdate {
   gameState?: 'placement' | 'active' | 'inactive' | 'waiting' | 'game-over';
@@ -31,6 +32,7 @@ export interface GameUpdate {
   winner?: string | null;
   clientIsHost?: boolean;
   errorMessage?: string;
+  placedShips?: { orientation: 'vertical' | 'horizontal'; placementStyle: React.CSSProperties }[];
 }
 
 export interface PlacementInterface {

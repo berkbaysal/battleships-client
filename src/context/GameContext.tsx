@@ -48,6 +48,7 @@ const INIT_STATE: Game = {
   activeGame: false,
   winner: null,
   errorMessage: '',
+  placedShips: [],
 };
 
 const TEST_INIT: Game = {
@@ -65,6 +66,7 @@ const TEST_INIT: Game = {
   activeGame: true,
   winner: null,
   errorMessage: '',
+  placedShips: [],
 };
 
 const GameContextProvider = ({ children, socket }: ContextProps) => {

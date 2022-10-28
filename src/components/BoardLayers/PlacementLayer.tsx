@@ -38,7 +38,7 @@ const PlacementLayer = () => {
         placement.orientation,
         boardSize,
         placement.originCell,
-        ships.length
+        ships[placement.currentShipIndex].values.length
       );
       if (newShipCells) {
         setPlacement((oldData) => ({ ...oldData, originCell: newShipCells[0], shipCells: newShipCells }));
@@ -51,9 +51,13 @@ const PlacementLayer = () => {
         orientation: oldData.orientation === 'vertical' ? 'horizontal' : 'vertical',
         shipCells: newShipCells,
       }));
+    } else if (e.key === 'Enter') {
+      placeShip();
+      advancePlacement();
     }
   }
   function calculateGridPosition(): React.CSSProperties {
+    console.log(placement.shipCells);
     const colStart = (placement.originCell % boardSize) + 1;
     const rowStart = Math.floor(placement.originCell / boardSize) + 1;
     const rowEnd = placement.orientation === 'vertical' ? rowStart + placement.shipCells.length : rowStart;
@@ -63,6 +67,33 @@ const PlacementLayer = () => {
       gridArea: `${rowStart}/${colStart}/${rowEnd}/${colEnd}`,
     };
   }
+
+  function placeShip() {
+    game.updateData({
+      playerBoard: gameEngine.placeShips(game.data.playerBoard, placement.shipCells, placement.currentShipIndex),
+      placedShips: [...game.data.placedShips, { orientation: placement.orientation, placementStyle: calculateGridPosition() }],
+    });
+  }
+
+  function advancePlacement() {
+    if (placement.currentShipIndex + 1 === ships.length) {
+      //finish placement
+    } else {
+      let shipCells: number[] = [];
+      for (let i = 0; i < ships[placement.currentShipIndex + 1].values.length; i++) {
+        shipCells.push(i * boardSize);
+      }
+      setPlacement((oldData) => ({
+        ...oldData,
+        originCell: 0,
+        shipCells: shipCells,
+        orientation: 'vertical',
+        currentShipIndex: oldData.currentShipIndex + 1,
+        //ADD COLLISION DETECTION
+      }));
+    }
+  }
+
   //INITIALIZE
   useEffect(() => {
     let shipCells: number[] = [];
@@ -82,15 +113,16 @@ const PlacementLayer = () => {
   console.log(placement);
   return (
     <div className={style.placementLayer}>
-      <img
-        src={
-          placement.orientation === 'horizontal'
-            ? spritesHorizontal[placement.currentShipIndex]
-            : spritesVertical[placement.currentShipIndex]
-        }
-        style={calculateGridPosition()}
-        className={style.placementImage}
-      />
+      {placement.orientation === 'horizontal' && (
+        <img
+          src={spritesHorizontal[placement.currentShipIndex]}
+          style={calculateGridPosition()}
+          className={style.placementImage}
+        />
+      )}
+      {placement.orientation === 'vertical' && (
+        <img src={spritesVertical[placement.currentShipIndex]} style={calculateGridPosition()} className={style.placementImage} />
+      )}
     </div>
   );
 };
