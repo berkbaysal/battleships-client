@@ -4,7 +4,7 @@ import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
 import { playerBoardValues } from '../static/gameValues';
 
-const DEBUG_MODE = false;
+const DEBUG_MODE = 'active';
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
@@ -33,44 +33,8 @@ const GAME_SOFT_RESET: GameUpdate = {
   errorMessage: '',
 };
 
-const INIT_STATE: Game = {
-  clientId: null,
-  roomName: null,
-  clientIsHost: false,
-  gameState: 'inactive',
-  activeMenu: 'welcome',
-  opponentGameState: null,
-  turn: '',
-  opponent: null,
-  playerBoard: [],
-  opponentBoard: [],
-  selectedCell: null,
-  activeGame: false,
-  winner: null,
-  errorMessage: '',
-  placedShips: [],
-};
-
-const TEST_INIT: Game = {
-  clientId: null,
-  roomName: 'test',
-  clientIsHost: true,
-  gameState: 'placement',
-  activeMenu: 'welcome',
-  opponentGameState: 'placement',
-  turn: '',
-  opponent: null,
-  playerBoard: gameEngine.initBoard(),
-  opponentBoard: gameEngine.initBoard(),
-  selectedCell: null,
-  activeGame: true,
-  winner: null,
-  errorMessage: '',
-  placedShips: [],
-};
-
 const GameContextProvider = ({ children, socket }: ContextProps) => {
-  const [game, setGame] = useState<Game>(DEBUG_MODE ? TEST_INIT : INIT_STATE);
+  const [game, setGame] = useState<Game>(gameEngine.getInitialGameState(DEBUG_MODE));
 
   const updateData = (data: GameUpdate) => {
     setGame((oldGame) => ({ ...oldGame, ...data }));

@@ -62,23 +62,18 @@ const PlacementLayer = () => {
     }
   }
 
-  //HANDLE IMAGE PLACEMENT AND SIZING ON GRID
-  function calculateGridPosition(): React.CSSProperties {
-    const colStart = (placement.originCell % boardSize) + 1;
-    const rowStart = Math.floor(placement.originCell / boardSize) + 1;
-    const rowEnd = placement.orientation === 'vertical' ? rowStart + placement.shipCells.length : rowStart;
-    const colEnd = placement.orientation === 'vertical' ? colStart : colStart + placement.shipCells.length;
-    return {
-      gridArea: `${rowStart}/${colStart}/${rowEnd}/${colEnd}`,
-    };
-  }
-
   //HANDLE CONFIRMING PLACEMENT
   function placeShip() {
     const updatedBoard = gameEngine.placeShips(game.data.playerBoard, placement.shipCells, placement.currentShipIndex);
     game.updateData({
       playerBoard: updatedBoard,
-      placedShips: [...game.data.placedShips, { orientation: placement.orientation, placementStyle: calculateGridPosition() }],
+      placedShips: [
+        ...game.data.placedShips,
+        {
+          orientation: placement.orientation,
+          placementStyle: gameEngine.calculateSpriteGridPosition(placement.shipCells, placement.orientation, boardSize),
+        },
+      ],
     });
     advancePlacement(updatedBoard);
   }
@@ -124,14 +119,14 @@ const PlacementLayer = () => {
       {placement.orientation === 'horizontal' && (
         <img
           src={spritesHorizontal[placement.currentShipIndex]}
-          style={calculateGridPosition()}
+          style={gameEngine.calculateSpriteGridPosition(placement.shipCells, placement.orientation, boardSize)}
           className={`${style.placingShipSprite} ${placement.colliding ? style.placementCollides : ''}`}
         />
       )}
       {placement.orientation === 'vertical' && (
         <img
           src={spritesVertical[placement.currentShipIndex]}
-          style={calculateGridPosition()}
+          style={gameEngine.calculateSpriteGridPosition(placement.shipCells, placement.orientation, boardSize)}
           className={`${style.placingShipSprite} ${placement.colliding ? style.placementCollides : ''}`}
         />
       )}

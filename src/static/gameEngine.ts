@@ -1,14 +1,101 @@
 import { playerBoardValues, opponentBoardValues, server } from './gameValues';
 import sprites from './sprites';
-import { ShipValues } from './interfaces';
+import { Game, ShipValues } from './interfaces';
 
 const gameEngine = {
-  initBoard: (size = 10) => {
+  initBoard(size = 10) {
     let board: number[] = [];
     for (let i = 0; i < Math.pow(size, 2); i++) {
       board.push(playerBoardValues.empty);
     }
     return board;
+  },
+  createTestBoard() {
+    let board = this.initBoard();
+    const boardSize = Math.sqrt(board.length);
+    for (let i = 0; i < playerBoardValues.ship.length; i++) {
+      const shipCells = [];
+      for (let j = 0; j < playerBoardValues.ship[i].values.length; j++) {
+        shipCells.push(j * boardSize + i);
+      }
+      board = this.placeShips(board, shipCells, i);
+    }
+    return board;
+  },
+  createTestPlacedShips(boardSize = 10) {
+    let placedShips: {
+      orientation: 'vertical' | 'horizontal';
+      placementStyle: React.CSSProperties;
+    }[] = [];
+    for (let i = 0; i < playerBoardValues.ship.length; i++) {
+      const shipCells = [];
+      for (let j = 0; j < playerBoardValues.ship[i].values.length; j++) {
+        shipCells.push(j * boardSize + i);
+      }
+      placedShips.push({
+        orientation: 'vertical',
+        placementStyle: this.calculateSpriteGridPosition(shipCells, 'vertical', boardSize),
+      });
+    }
+    return placedShips;
+  },
+  getInitialGameState(debugMode = ''): Game {
+    switch (debugMode) {
+      case 'placement':
+        return {
+          clientId: null,
+          roomName: 'test',
+          clientIsHost: true,
+          gameState: 'placement',
+          activeMenu: 'welcome',
+          opponentGameState: 'placement',
+          turn: '',
+          opponent: null,
+          playerBoard: gameEngine.initBoard(),
+          opponentBoard: gameEngine.initBoard(),
+          selectedCell: null,
+          activeGame: true,
+          winner: null,
+          errorMessage: '',
+          placedShips: [],
+        };
+      case 'active':
+        return {
+          clientId: 'player',
+          roomName: 'test',
+          clientIsHost: true,
+          gameState: 'active',
+          activeMenu: 'welcome',
+          opponentGameState: 'active',
+          turn: 'player',
+          opponent: 'opponent',
+          playerBoard: this.createTestBoard(),
+          opponentBoard: gameEngine.initBoard(),
+          selectedCell: null,
+          activeGame: true,
+          winner: null,
+          errorMessage: '',
+          placedShips: this.createTestPlacedShips(),
+        };
+      default:
+        return {
+          clientId: null,
+          roomName: null,
+          clientIsHost: false,
+          gameState: 'inactive',
+          activeMenu: 'welcome',
+          opponentGameState: null,
+          turn: '',
+          opponent: null,
+          playerBoard: [],
+          opponentBoard: [],
+          selectedCell: null,
+          activeGame: false,
+          winner: null,
+          errorMessage: '',
+          placedShips: [],
+        };
+    }
   },
   changeCellValue(array: number[], cell: number, newValue: number) {
     let newArray = array.map((value, index) => {
@@ -63,6 +150,20 @@ const gameEngine = {
     }
 
     return style;
+  },
+  calculateSpriteGridPosition(
+    shipCells: number[],
+    orientation: 'vertical' | 'horizontal',
+    boardSize: number
+  ): React.CSSProperties {
+    const originCell = shipCells[0];
+    const colStart = (originCell % boardSize) + 1;
+    const rowStart = Math.floor(originCell / boardSize) + 1;
+    const rowEnd = orientation === 'vertical' ? rowStart + shipCells.length : rowStart;
+    const colEnd = orientation === 'vertical' ? colStart : colStart + shipCells.length;
+    return {
+      gridArea: `${rowStart}/${colStart}/${rowEnd}/${colEnd}`,
+    };
   },
   calculatePlacementShift(
     input: string,
@@ -158,14 +259,12 @@ const gameEngine = {
         return cell;
       }
     });
-    console.log(newBoard);
     return newBoard;
   },
   checkCollision(board: number[], shipCells: number[]) {
     let collision = false;
     for (let i = 0; i < shipCells.length; i++) {
       let boardIndex = shipCells[i];
-      console.log(board[boardIndex], playerBoardValues.empty, shipCells, board);
       if (board[boardIndex] !== playerBoardValues.empty) {
         collision = true;
         break;
@@ -184,7 +283,6 @@ const gameEngine = {
   formatRoomName(roomName: string) {
     let formattedString = roomName.toLowerCase();
     formattedString = formattedString[0].toUpperCase() + formattedString.slice(1);
-    console.log(formattedString);
     return formattedString;
   },
   spriteStyleConstructor(code: number, orientation: 'vertical' | 'horizontal') {
