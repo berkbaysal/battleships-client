@@ -33,36 +33,42 @@ const PlacementLayer = () => {
   function handleKeydown(e: KeyboardEvent) {
     //HANDLE MOVEMENT
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-      const newShipCells = gameEngine.calculatePlacementShift(
+      const shipCells = gameEngine.calculatePlacementShift(
         e.key,
         placement.orientation,
         boardSize,
         placement.originCell,
         ships[placement.currentShipIndex].values.length
       );
-      if (newShipCells) {
-        setPlacement((oldData) => ({ ...oldData, originCell: newShipCells[0], shipCells: newShipCells }));
+      if (shipCells) {
+        setPlacement((oldData) => ({
+          ...oldData,
+          originCell: shipCells[0],
+          shipCells: shipCells,
+          colliding: gameEngine.checkCollision(game.data.playerBoard, shipCells),
+        }));
       }
     } else if (e.key === 'r') {
-      const newShipCells = gameEngine.swapOrientationOfShipCells(placement.shipCells, boardSize, placement.orientation);
+      const shipCells = gameEngine.swapOrientationOfShipCells(placement.shipCells, boardSize, placement.orientation);
       setPlacement((oldData) => ({
         ...oldData,
-        originCell: newShipCells[0],
+        originCell: shipCells[0],
         orientation: oldData.orientation === 'vertical' ? 'horizontal' : 'vertical',
-        shipCells: newShipCells,
+        shipCells: shipCells,
+        colliding: gameEngine.checkCollision(game.data.playerBoard, shipCells),
       }));
     } else if (e.key === 'Enter') {
-      placeShip();
-      advancePlacement();
+      if (!placement.colliding) {
+        placeShip();
+        advancePlacement();
+      }
     }
   }
   function calculateGridPosition(): React.CSSProperties {
-    console.log(placement.shipCells);
     const colStart = (placement.originCell % boardSize) + 1;
     const rowStart = Math.floor(placement.originCell / boardSize) + 1;
     const rowEnd = placement.orientation === 'vertical' ? rowStart + placement.shipCells.length : rowStart;
     const colEnd = placement.orientation === 'vertical' ? colStart : colStart + placement.shipCells.length;
-    console.log(`${rowStart}/${colStart}/${rowEnd}/${colEnd}`);
     return {
       gridArea: `${rowStart}/${colStart}/${rowEnd}/${colEnd}`,
     };
@@ -89,7 +95,7 @@ const PlacementLayer = () => {
         shipCells: shipCells,
         orientation: 'vertical',
         currentShipIndex: oldData.currentShipIndex + 1,
-        //ADD COLLISION DETECTION
+        colliding: gameEngine.checkCollision(game.data.playerBoard, shipCells),
       }));
     }
   }
@@ -110,21 +116,20 @@ const PlacementLayer = () => {
     return () => document.removeEventListener('keydown', handleKeydown);
   }, [placement.orientation, placement.currentShipIndex, placement.shipCells, game.data.playerBoard]);
   /////////
-  console.log(placement);
   return (
     <div className={style.placementLayer}>
       {placement.orientation === 'horizontal' && (
         <img
           src={spritesHorizontal[placement.currentShipIndex]}
           style={calculateGridPosition()}
-          className={style.placingShipSprite}
+          className={`${style.placingShipSprite} ${placement.colliding ? style.placementCollides : ''}`}
         />
       )}
       {placement.orientation === 'vertical' && (
         <img
           src={spritesVertical[placement.currentShipIndex]}
           style={calculateGridPosition()}
-          className={style.placingShipSprite}
+          className={`${style.placingShipSprite} ${placement.colliding ? style.placementCollides : ''}`}
         />
       )}
     </div>
