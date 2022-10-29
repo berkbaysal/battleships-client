@@ -74,6 +74,10 @@
   @extend .boardLayer;
 }
 
+.targetingLayer {
+  @extend .boardLayer;
+}
+
 .subTextTop {
   @extend .subText;
   font-size: 1.25rem;
@@ -86,8 +90,6 @@
 }
 
 .cell {
-  width: auto;
-  height: 100%;
   border: 1px solid black;
   display: flex;
   align-items: center;
@@ -96,6 +98,7 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  opacity: 1;
 }
 
 .shipSprite {

@@ -39,7 +39,8 @@ const gameEngine = {
     }
     return placedShips;
   },
-  damageTestBoard(board: number[], numberOfAttacks = 25) {
+  damageTestBoard(board: number[], boardType: 'player' | 'opponent', numberOfAttacks = 25) {
+    //performs random attacks on the given board to simulate how a board would look sometime into the game
     let newBoard: number[] = [];
     let attackedSquares: number[] = [];
     const validShipValues = this.getValidShipValues();
@@ -48,12 +49,19 @@ const gameEngine = {
       if (attackedSquares.includes(randomCell)) continue;
       else attackedSquares.push(randomCell);
     }
-    for (let i = 0; i < board.length; i++) {
-      if (attackedSquares.includes(i)) {
-        if (validShipValues.includes(board[i])) {
-          newBoard.push(playerBoardValues.shipWreck);
-        } else newBoard.push(playerBoardValues.missedShot);
-      } else newBoard.push(board[i]);
+    if (boardType === 'player') {
+      for (let i = 0; i < board.length; i++) {
+        if (attackedSquares.includes(i)) {
+          if (validShipValues.includes(board[i])) {
+            newBoard.push(playerBoardValues.shipWreck);
+          } else newBoard.push(playerBoardValues.missedShot);
+        } else newBoard.push(board[i]);
+      }
+    } else {
+      newBoard = board.map((value, index) =>
+        //simulate hit or miss randomly to imitate a real game opponent board
+        attackedSquares.includes(index) ? (Math.random() > 0.3 ? opponentBoardValues.hit : opponentBoardValues.missed) : value
+      );
     }
     return newBoard;
   },
@@ -105,8 +113,8 @@ const gameEngine = {
           opponentGameState: 'active',
           turn: 'player',
           opponent: 'opponent',
-          playerBoard: this.damageTestBoard(this.createTestBoard()),
-          opponentBoard: gameEngine.initBoard(),
+          playerBoard: this.damageTestBoard(this.createTestBoard(), 'player'),
+          opponentBoard: this.damageTestBoard(gameEngine.initBoard(), 'opponent'),
           selectedCell: null,
           activeGame: true,
           winner: null,

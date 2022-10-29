@@ -1,6 +1,6 @@
 import { useGameContext } from '../../context/GameContext';
 import style from '../../styles/Board.module.scss';
-import { playerBoardValues } from '../../static/gameValues';
+import { opponentBoardValues, playerBoardValues } from '../../static/gameValues';
 
 interface DamageLayerProps {
   boardType: 'player' | 'opponent';
@@ -18,6 +18,16 @@ const DamageLayer = ({ boardType }: DamageLayerProps) => {
             const styleOverride: React.CSSProperties = {};
             if (cell === playerBoardValues.shipWreck) styleOverride.backgroundColor = 'red';
             else if (cell === playerBoardValues.missedShot) styleOverride.backgroundColor = 'yellow';
+            return <div className={style.cell} style={styleOverride}></div>;
+          })}
+        </>
+      )}
+      {boardType === 'opponent' && (
+        <>
+          {game.data.opponentBoard.map((cell, index) => {
+            const styleOverride: React.CSSProperties = {};
+            if (cell === opponentBoardValues.hit) styleOverride.backgroundColor = 'red';
+            else if (cell === opponentBoardValues.missed) styleOverride.backgroundColor = 'yellow';
             return <div className={style.cell} style={styleOverride}></div>;
           })}
         </>

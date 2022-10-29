@@ -3,6 +3,7 @@ import BackgroundLayer from './BoardLayers/BackgroundLayer';
 import DamageLayer from './BoardLayers/DamageLayer';
 import PlacementLayer from './BoardLayers/PlacementLayer';
 import ShipsLayer from './BoardLayers/ShipsLayer';
+import TargetingLayer from './BoardLayers/TargetingLayer';
 
 interface BoardProps {
   boardType: 'player' | 'opponent' | 'placement';
@@ -33,6 +34,8 @@ const Board = ({ boardType, subTextTop, subTextBottom, className = '' }: BoardPr
           {boardType === 'opponent' && (
             <>
               <BackgroundLayer />
+              <DamageLayer boardType="opponent" />
+              <TargetingLayer />
             </>
           )}
         </div>
