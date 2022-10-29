@@ -1,10 +1,8 @@
-import { useGameContext } from '../context/GameContext';
 import style from '../styles/Board.module.scss';
 import BackgroundLayer from './BoardLayers/BackgroundLayer';
+import DamageLayer from './BoardLayers/DamageLayer';
 import PlacementLayer from './BoardLayers/PlacementLayer';
 import ShipsLayer from './BoardLayers/ShipsLayer';
-import GameBoard from './GameBoard';
-import PlacementBoard from './PlacementBoard';
 
 interface BoardProps {
   boardType: 'player' | 'opponent' | 'placement';
@@ -29,7 +27,12 @@ const Board = ({ boardType, subTextTop, subTextBottom, className = '' }: BoardPr
             <>
               <BackgroundLayer />
               <ShipsLayer />
-              <PlacementLayer />
+              <DamageLayer boardType="player" />
+            </>
+          )}
+          {boardType === 'opponent' && (
+            <>
+              <BackgroundLayer />
             </>
           )}
         </div>

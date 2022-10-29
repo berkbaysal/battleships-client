@@ -70,6 +70,10 @@
   @extend .boardLayer;
 }
 
+.damageLayer {
+  @extend .boardLayer;
+}
+
 .subTextTop {
   @extend .subText;
   font-size: 1.25rem;

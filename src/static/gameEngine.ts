@@ -39,6 +39,24 @@ const gameEngine = {
     }
     return placedShips;
   },
+  damageTestBoard(board: number[], numberOfAttacks = 25) {
+    let newBoard: number[] = [];
+    let attackedSquares: number[] = [];
+    const validShipValues = this.getValidShipValues();
+    while (attackedSquares.length < numberOfAttacks) {
+      const randomCell = Math.floor(Math.random() * 100);
+      if (attackedSquares.includes(randomCell)) continue;
+      else attackedSquares.push(randomCell);
+    }
+    for (let i = 0; i < board.length; i++) {
+      if (attackedSquares.includes(i)) {
+        if (validShipValues.includes(board[i])) {
+          newBoard.push(playerBoardValues.shipWreck);
+        } else newBoard.push(playerBoardValues.missedShot);
+      } else newBoard.push(board[i]);
+    }
+    return newBoard;
+  },
   getInitialGameState(debugMode = ''): Game {
     switch (debugMode) {
       case 'placement':
@@ -59,7 +77,7 @@ const gameEngine = {
           errorMessage: '',
           placedShips: [],
         };
-      case 'active':
+      case 'start':
         return {
           clientId: 'player',
           roomName: 'test',
@@ -70,6 +88,24 @@ const gameEngine = {
           turn: 'player',
           opponent: 'opponent',
           playerBoard: this.createTestBoard(),
+          opponentBoard: gameEngine.initBoard(),
+          selectedCell: null,
+          activeGame: true,
+          winner: null,
+          errorMessage: '',
+          placedShips: this.createTestPlacedShips(),
+        };
+      case 'midgame':
+        return {
+          clientId: 'player',
+          roomName: 'test',
+          clientIsHost: true,
+          gameState: 'active',
+          activeMenu: 'welcome',
+          opponentGameState: 'active',
+          turn: 'player',
+          opponent: 'opponent',
+          playerBoard: this.damageTestBoard(this.createTestBoard()),
           opponentBoard: gameEngine.initBoard(),
           selectedCell: null,
           activeGame: true,
