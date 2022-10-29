@@ -1,8 +1,8 @@
-import aircraftCarrier from '../assets/gameSprites/aircraftCarrier.png';
-import battleship from '../assets/gameSprites/battleship.png';
-import destoryer from '../assets/gameSprites/destroyer.png';
-import submarine from '../assets/gameSprites/submarine.png';
-import patrolBoat from '../assets/gameSprites/patrolBoat.png';
+import aircraftCarrierVertical from '../assets/gameSprites/aircraftCarrier.png';
+import battleshipVertical from '../assets/gameSprites/battleship.png';
+import destoryerVertical from '../assets/gameSprites/destroyer.png';
+import submarineVertical from '../assets/gameSprites/submarine.png';
+import patrolBoatVertical from '../assets/gameSprites/patrolBoat.png';
 import aircraftCarrierHorizontal from '../assets/gameSprites/aircraftCarrier_hor.png';
 import battleshipHorizontal from '../assets/gameSprites/battleship_hor.png';
 import destoryerHorizontal from '../assets/gameSprites/destroyer_hor.png';
@@ -25,13 +25,6 @@ const playerBoardValues = {
     { shipName: 'submarine', values: [1310, 1320] },
     { shipName: 'patrolBoat', values: [1410] },
   ],
-  placingShipCollides: {
-    aircraftCarrier: [1015, 1025, 1035, 1045, 1055],
-    battleship: [1115, 1125, 1135, 1145],
-    destroyer: [1215, 1225, 1235],
-    submarine: [1315, 1325],
-    patrolBoat: [1415],
-  },
   shipWreck: 201,
   missedShot: 301,
 };
@@ -47,7 +40,7 @@ const ships = [
   { name: 'Submarine', size: 2 },
   { name: 'Patrol Boat', size: 1 },
 ];
-const spritesVertical = [aircraftCarrier, battleship, destoryer, submarine, patrolBoat];
+const spritesVertical = [aircraftCarrierVertical, battleshipVertical, destoryerVertical, submarineVertical, patrolBoatVertical];
 const spritesHorizontal = [
   aircraftCarrierHorizontal,
   battleshipHorizontal,
@@ -56,5 +49,5 @@ const spritesHorizontal = [
   patrolBoatHorizontal,
 ];
 
-const server = process.env.NODE_ENV === 'development' ? 'localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
+const server = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
 export { playerBoardValues, opponentBoardValues, ships, server, spritesHorizontal, spritesVertical };

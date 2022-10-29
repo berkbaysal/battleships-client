@@ -7,23 +7,31 @@ import GameBoard from './GameBoard';
 import PlacementBoard from './PlacementBoard';
 
 interface BoardProps {
-  boardData: number[];
   boardType: 'player' | 'opponent' | 'placement';
   subTextTop?: string;
   subTextBottom?: string;
   className?: string;
 }
 
-const Board = ({ boardData, boardType, subTextTop, subTextBottom, className = '' }: BoardProps) => {
+const Board = ({ boardType, subTextTop, subTextBottom, className = '' }: BoardProps) => {
   return (
     <div className={className}>
       <div className={style.boardContainer}>
         <div className={style.board}>
-          <BackgroundLayer />
-          <ShipsLayer />
-          <PlacementLayer />
-          {/* {boardType === 'placement' && <PlacementBoard />}
-          {boardType !== 'placement' && <GameBoard boardData={boardData} boardType={boardType} />} */}
+          {boardType === 'placement' && (
+            <>
+              <BackgroundLayer />
+              <ShipsLayer />
+              <PlacementLayer />
+            </>
+          )}
+          {boardType === 'player' && (
+            <>
+              <BackgroundLayer />
+              <ShipsLayer />
+              <PlacementLayer />
+            </>
+          )}
         </div>
       </div>
       {subTextTop && <div className={style.subTextTop}>{subTextTop}</div>}

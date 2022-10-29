@@ -23,15 +23,13 @@ const INIT_STATE: PlacementData = {
   currentShipIndex: 0,
 };
 
-const collidingStyleOverwrite: React.CSSProperties = { opacity: 0.8 };
-
 const PlacementLayer = () => {
   const [placement, setPlacement] = useState<PlacementData>(INIT_STATE);
   const game = useGameContext();
   const boardSize = Math.sqrt(game.data.playerBoard.length);
 
+  //HANDLE MOVEMENT
   function handleKeydown(e: KeyboardEvent) {
-    //HANDLE MOVEMENT
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       const shipCells = gameEngine.calculatePlacementShift(
         e.key,
@@ -60,10 +58,11 @@ const PlacementLayer = () => {
     } else if (e.key === 'Enter') {
       if (!placement.colliding) {
         placeShip();
-        advancePlacement();
       }
     }
   }
+
+  //HANDLE IMAGE PLACEMENT AND SIZING ON GRID
   function calculateGridPosition(): React.CSSProperties {
     const colStart = (placement.originCell % boardSize) + 1;
     const rowStart = Math.floor(placement.originCell / boardSize) + 1;
@@ -74,16 +73,20 @@ const PlacementLayer = () => {
     };
   }
 
+  //HANDLE CONFIRMING PLACEMENT
   function placeShip() {
+    const updatedBoard = gameEngine.placeShips(game.data.playerBoard, placement.shipCells, placement.currentShipIndex);
     game.updateData({
-      playerBoard: gameEngine.placeShips(game.data.playerBoard, placement.shipCells, placement.currentShipIndex),
+      playerBoard: updatedBoard,
       placedShips: [...game.data.placedShips, { orientation: placement.orientation, placementStyle: calculateGridPosition() }],
     });
+    advancePlacement(updatedBoard);
   }
 
-  function advancePlacement() {
+  //HANDLE ADVANCING PLACEMENT OR GAME STAGE
+  function advancePlacement(updatedBoard: number[]) {
     if (placement.currentShipIndex + 1 === ships.length) {
-      //finish placement
+      game.completePlacement();
     } else {
       let shipCells: number[] = [];
       for (let i = 0; i < ships[placement.currentShipIndex + 1].values.length; i++) {
@@ -95,7 +98,7 @@ const PlacementLayer = () => {
         shipCells: shipCells,
         orientation: 'vertical',
         currentShipIndex: oldData.currentShipIndex + 1,
-        colliding: gameEngine.checkCollision(game.data.playerBoard, shipCells),
+        colliding: gameEngine.checkCollision(updatedBoard, shipCells),
       }));
     }
   }
@@ -109,13 +112,13 @@ const PlacementLayer = () => {
     const colliding = gameEngine.checkCollision(game.data.playerBoard, shipCells);
     setPlacement((oldData) => ({ ...oldData, shipCells: shipCells, colliding: colliding }));
   }, []);
-  //////
+
   //ADD AND MANAGE EVENT LISTENERS
   useEffect(() => {
     document.addEventListener('keydown', handleKeydown);
     return () => document.removeEventListener('keydown', handleKeydown);
   }, [placement.orientation, placement.currentShipIndex, placement.shipCells, game.data.playerBoard]);
-  /////////
+
   return (
     <div className={style.placementLayer}>
       {placement.orientation === 'horizontal' && (

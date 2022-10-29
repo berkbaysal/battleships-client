@@ -165,6 +165,7 @@ const gameEngine = {
     let collision = false;
     for (let i = 0; i < shipCells.length; i++) {
       let boardIndex = shipCells[i];
+      console.log(board[boardIndex], playerBoardValues.empty, shipCells, board);
       if (board[boardIndex] !== playerBoardValues.empty) {
         collision = true;
         break;

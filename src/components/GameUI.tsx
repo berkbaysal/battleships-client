@@ -13,7 +13,6 @@ const GameUI = () => {
         <div className={style.gameBoards}>
           {game.data.gameState === 'placement' && (
             <Board
-              boardData={game.data.playerBoard}
               boardType="placement"
               subTextTop="Place your ships."
               subTextBottom="Use arrow keys to move, R to rotate, Enter to place."
@@ -22,18 +21,8 @@ const GameUI = () => {
           )}
           {game.data.gameState === 'active' && (
             <>
-              <Board
-                boardData={game.data.opponentBoard}
-                boardType="opponent"
-                subTextTop="Opponents Board"
-                className={boardStyle.leftBoard}
-              />
-              <Board
-                boardData={game.data.playerBoard}
-                boardType="player"
-                subTextTop="Your Board"
-                className={boardStyle.rightBoard}
-              />
+              <Board boardType="opponent" subTextTop="Opponents Board" className={boardStyle.leftBoard} />
+              <Board boardType="player" subTextTop="Your Board" className={boardStyle.rightBoard} />
             </>
           )}
           {game.data.gameState === 'game-over' && (

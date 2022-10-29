@@ -4,7 +4,7 @@ import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
 import { playerBoardValues } from '../static/gameValues';
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
