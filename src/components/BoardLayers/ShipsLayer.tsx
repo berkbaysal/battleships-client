@@ -9,9 +9,9 @@ const ShipsLayer = () => {
     <div className={style.shipsLayer}>
       {game.data.placedShips.map((entry, index) =>
         entry.orientation === 'horizontal' ? (
-          <img src={spritesHorizontal[index]} style={entry.placementStyle} className={style.shipSprite} />
+          <img src={spritesHorizontal[index]} style={entry.placementStyle} className={style.sprite} />
         ) : (
-          <img src={spritesVertical[index]} style={entry.placementStyle} className={style.shipSprite} />
+          <img src={spritesVertical[index]} style={entry.placementStyle} className={style.sprite} />
         )
       )}
     </div>

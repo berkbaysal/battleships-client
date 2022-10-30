@@ -1,6 +1,6 @@
 import { useGameContext } from '../../context/GameContext';
 import style from '../../styles/Board.module.scss';
-import { opponentBoardValues, playerBoardValues } from '../../static/gameValues';
+import { opponentBoardValues, playerBoardValues, targetingSprites } from '../../static/gameValues';
 
 interface DamageLayerProps {
   boardType: 'player' | 'opponent';
@@ -15,10 +15,21 @@ const DamageLayer = ({ boardType }: DamageLayerProps) => {
       {boardType === 'player' && (
         <>
           {game.data.playerBoard.map((cell, index) => {
-            const styleOverride: React.CSSProperties = {};
-            if (cell === playerBoardValues.shipWreck) styleOverride.backgroundColor = 'red';
-            else if (cell === playerBoardValues.missedShot) styleOverride.backgroundColor = 'yellow';
-            return <div className={style.cell} style={styleOverride}></div>;
+            if (cell === playerBoardValues.shipWreck) {
+              return (
+                <div className={style.cell}>
+                  <img className={style.damageSprite} src={targetingSprites.damage} />
+                </div>
+              );
+            } else if (cell === playerBoardValues.missedShot) {
+              return (
+                <div className={style.cell}>
+                  <img className={style.damageSprite} src={targetingSprites.miss} />
+                </div>
+              );
+            } else {
+              return <div className={style.cell}></div>;
+            }
           })}
         </>
       )}
@@ -26,9 +37,21 @@ const DamageLayer = ({ boardType }: DamageLayerProps) => {
         <>
           {game.data.opponentBoard.map((cell, index) => {
             const styleOverride: React.CSSProperties = {};
-            if (cell === opponentBoardValues.hit) styleOverride.backgroundColor = 'red';
-            else if (cell === opponentBoardValues.missed) styleOverride.backgroundColor = 'yellow';
-            return <div className={style.cell} style={styleOverride}></div>;
+            if (cell === opponentBoardValues.hit) {
+              return (
+                <div className={style.cell}>
+                  <img className={style.damageSprite} src={targetingSprites.damage} />{' '}
+                </div>
+              );
+            } else if (cell === opponentBoardValues.missed) {
+              return (
+                <div className={style.cell}>
+                  <img className={style.damageSprite} src={targetingSprites.miss} />
+                </div>
+              );
+            } else {
+              return <div className={style.cell}></div>;
+            }
           })}
         </>
       )}

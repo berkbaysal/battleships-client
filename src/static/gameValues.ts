@@ -8,6 +8,9 @@ import battleshipHorizontal from '../assets/gameSprites/battleship_hor.png';
 import destoryerHorizontal from '../assets/gameSprites/destroyer_hor.png';
 import submarineHorizontal from '../assets/gameSprites/submarine_hor.png';
 import patrolBoatHorizontal from '../assets/gameSprites/patrolBoat_hor.png';
+import damageSprite from '../assets/gameSprites/damage.png';
+import missSprite from '../assets/gameSprites/miss.png';
+import targetingSprite from '../assets/gameSprites/targeting.png';
 
 const playerBoardValues = {
   empty: 0,
@@ -48,6 +51,7 @@ const spritesHorizontal = [
   submarineHorizontal,
   patrolBoatHorizontal,
 ];
+const targetingSprites = { damage: damageSprite, miss: missSprite, targeting: targetingSprite };
 
 const server = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/' : 'https://battleships-364108.ew.r.appspot.com/';
-export { playerBoardValues, opponentBoardValues, ships, server, spritesHorizontal, spritesVertical };
+export { playerBoardValues, opponentBoardValues, ships, server, spritesHorizontal, spritesVertical, targetingSprites };

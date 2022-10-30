@@ -1,5 +1,6 @@
 import { useGameContext } from '../../context/GameContext';
 import style from '../../styles/Board.module.scss';
+import { targetingSprites } from '../../static/gameValues';
 
 const TargetingLayer = () => {
   const game = useGameContext();
@@ -17,7 +18,9 @@ const TargetingLayer = () => {
             onClick={() => {
               handleClick(index);
             }}
-          ></div>
+          >
+            {index === game.data.selectedCell && <img src={targetingSprites.targeting} className={style.targetingSprite} />}
+          </div>
         );
       })}
     </div>
