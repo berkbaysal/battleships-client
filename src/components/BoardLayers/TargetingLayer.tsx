@@ -14,7 +14,7 @@ const TargetingLayer = () => {
       {game.data.opponentBoard.map((value, index) => {
         return (
           <div
-            className={`${style.cell} ${index === game.data.selectedCell ? style.selected : ''}`}
+            className={`${style.targetingCell} ${index === game.data.selectedCell ? style.selected : ''}`}
             onClick={() => {
               handleClick(index);
             }}
