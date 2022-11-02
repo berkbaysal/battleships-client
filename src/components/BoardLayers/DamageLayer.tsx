@@ -11,7 +11,7 @@ const DamageLayer = ({ boardType }: DamageLayerProps) => {
   const boardSize = Math.sqrt(game.data.playerBoard.length);
 
   return (
-    <div className={style.damageLayer}>
+    <div className={style.boardLayer}>
       {boardType === 'player' && (
         <>
           {game.data.playerBoard.map((cell, index) => {

@@ -59,30 +59,6 @@
   overflow: hidden;
 }
 
-.backgroundLayer {
-  @extend .boardLayer;
-}
-
-.placementLayer {
-  @extend .boardLayer;
-}
-
-.shipsLayer {
-  @extend .boardLayer;
-}
-
-.damageLayer {
-  @extend .boardLayer;
-}
-
-.targetingLayer {
-  @extend .boardLayer;
-}
-
-.gridLayer {
-  @extend .boardLayer;
-}
-
 .subTextTop {
   @extend .subText;
   font-size: 1.25rem;
@@ -153,10 +129,6 @@
   background-color: rgba(0, 255, 0, 0.7);
 }
 
-.--blinking {
-  animation: blink 1.5s linear infinite ease-in-out;
-}
-
 @keyframes blink {
   0% {
     opacity: 1;
@@ -178,17 +150,5 @@
   }
   100% {
     transform: scale(0.9);
-  }
-}
-
-@keyframes wave {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
   }
 }

@@ -115,7 +115,7 @@ const PlacementLayer = () => {
   }, [placement.orientation, placement.currentShipIndex, placement.shipCells, game.data.playerBoard]);
 
   return (
-    <div className={style.placementLayer}>
+    <div className={style.boardLayer}>
       {placement.orientation === 'horizontal' && (
         <img
           src={spritesHorizontal[placement.currentShipIndex]}

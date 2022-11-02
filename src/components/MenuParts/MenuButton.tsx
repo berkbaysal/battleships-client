@@ -1,4 +1,4 @@
-import style from '../styles/Menu.module.scss';
+import style from '../../styles/Menu.module.scss';
 import React from 'react';
 
 interface MenuButtonProps {

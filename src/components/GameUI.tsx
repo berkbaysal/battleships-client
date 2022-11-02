@@ -2,7 +2,7 @@ import { useGameContext } from '../context/GameContext';
 import boardStyle from '../styles/Board.module.scss';
 import style from '../styles/Game.module.scss';
 import Board from './Board';
-import MenuButton from './MenuButton';
+import MenuButton from './MenuParts/MenuButton';
 const GameUI = () => {
   const game = useGameContext();
   const isClientsTurn = game.data.clientId === game.data.turn;

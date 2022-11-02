@@ -1,6 +1,6 @@
-import logo from '../assets/logo.png';
-import { useGameContext } from '../context/GameContext';
-import style from '../styles/Menu.module.scss';
+import logo from '../../assets/logo.png';
+import { useGameContext } from '../../context/GameContext';
+import style from '../../styles/Menu.module.scss';
 import MenuButton from './MenuButton';
 
 const WelcomeScreen = () => {

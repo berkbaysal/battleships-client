@@ -1,8 +1,8 @@
-import { useGameContext } from '../context/GameContext';
-import style from '../styles/Menu.module.scss';
+import { useGameContext } from '../../context/GameContext';
+import style from '../../styles/Menu.module.scss';
 import MenuButton from './MenuButton';
-import playerFound from '../assets/playerFound.png';
-import noPlayerFound from '../assets/noPlayerFound.png';
+import playerFound from '../../assets/playerFound.png';
+import noPlayerFound from '../../assets/noPlayerFound.png';
 import { useEffect, useState } from 'react';
 import { IoArrowBackCircleSharp } from 'react-icons/io5';
 

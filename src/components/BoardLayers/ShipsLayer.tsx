@@ -6,7 +6,7 @@ const ShipsLayer = () => {
   const game = useGameContext();
 
   return (
-    <div className={style.shipsLayer}>
+    <div className={style.boardLayer}>
       {game.data.placedShips.map((entry, index) =>
         entry.orientation === 'horizontal' ? (
           <img src={spritesHorizontal[index]} style={entry.placementStyle} className={style.sprite} />

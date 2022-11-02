@@ -1,7 +1,6 @@
-import { useGameContext } from '../context/GameContext';
-import style from '../styles/Menu.module.scss';
+import { useGameContext } from '../../context/GameContext';
+import style from '../../styles/Menu.module.scss';
 import MenuButton from './MenuButton';
-import logo from '../assets/logo.png';
 
 const MainMenu = () => {
   const game = useGameContext();

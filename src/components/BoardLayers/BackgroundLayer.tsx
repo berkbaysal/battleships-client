@@ -11,7 +11,7 @@ const BackgroundLayer = ({ variation = 'fullscreen' }: BackgroundLayerProps) => 
   const game = useGameContext();
 
   return (
-    <div className={style.backgroundLayer}>
+    <div className={style.boardLayer}>
       {variation === 'cell' &&
         game.data.playerBoard.map((cell, index) => (
           <img src={background} alt="background-tile" key={`background-tile-${index}`} className={style.backgroundImage} />

@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { useGameContext } from '../context/GameContext';
 import style from '../styles/Menu.module.scss';
-import HostMenu from './HostMenu';
-import MatchmakingMenu from './MatchmakingMenu';
-import MainMenu from './MainMenu';
-import WelcomeScreen from './WelcomeScreen';
-import JoinMenu from './JoinMenu';
+import HostMenu from './MenuParts/HostMenu';
+import MatchmakingMenu from './MenuParts/MatchmakingMenu';
+import MainMenu from './MenuParts/MainMenu';
+import WelcomeScreen from './MenuParts/WelcomeScreen';
+import JoinMenu from './MenuParts/JoinMenu';
 
 const ControlUI = () => {
   const game = useGameContext();

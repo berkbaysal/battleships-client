@@ -10,7 +10,7 @@ const TargetingLayer = () => {
   }
 
   return (
-    <div className={style.targetingLayer}>
+    <div className={style.boardLayer}>
       {game.data.opponentBoard.map((value, index) => {
         return (
           <div
