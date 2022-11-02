@@ -21,17 +21,17 @@ const Board = ({ boardType, subTextTop, subTextBottom, className = '' }: BoardPr
           {boardType === 'placement' && (
             <>
               <BackgroundLayer />
+              <GridLayer />
               <ShipsLayer />
               <PlacementLayer />
-              <GridLayer />
             </>
           )}
           {boardType === 'player' && (
             <>
               <BackgroundLayer />
+              <GridLayer />
               <ShipsLayer />
               <DamageLayer boardType="player" />
-              <GridLayer />
             </>
           )}
           {boardType === 'opponent' && (

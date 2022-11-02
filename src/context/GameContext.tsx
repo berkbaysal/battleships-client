@@ -4,7 +4,7 @@ import { Socket } from 'socket.io-client';
 import gameEngine from '../static/gameEngine';
 import { playerBoardValues } from '../static/gameValues';
 
-const DEBUG_MODE = 'midgame'; //VALID VALUES: "placement", "start", "midgame"
+const DEBUG_MODE = ''; //VALID VALUES: "placement", "start", "midgame"
 
 const GameContext = createContext<GameContextInterface | undefined>(undefined);
 
