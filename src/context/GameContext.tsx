@@ -11,7 +11,7 @@ const GameContext = createContext<GameContextInterface | undefined>(undefined);
 function useGameContext() {
   const context = useContext(GameContext);
   if (context === undefined) {
-    throw new Error('ServerContext is undefined');
+    throw new Error('GameContext is undefined');
   }
   return context;
 }
