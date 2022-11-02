@@ -1,6 +1,7 @@
 import style from '../styles/Board.module.scss';
 import BackgroundLayer from './BoardLayers/BackgroundLayer';
 import DamageLayer from './BoardLayers/DamageLayer';
+import GridLayer from './BoardLayers/GridLayer';
 import PlacementLayer from './BoardLayers/PlacementLayer';
 import ShipsLayer from './BoardLayers/ShipsLayer';
 import TargetingLayer from './BoardLayers/TargetingLayer';
@@ -22,6 +23,7 @@ const Board = ({ boardType, subTextTop, subTextBottom, className = '' }: BoardPr
               <BackgroundLayer />
               <ShipsLayer />
               <PlacementLayer />
+              <GridLayer />
             </>
           )}
           {boardType === 'player' && (
@@ -29,12 +31,14 @@ const Board = ({ boardType, subTextTop, subTextBottom, className = '' }: BoardPr
               <BackgroundLayer />
               <ShipsLayer />
               <DamageLayer boardType="player" />
+              <GridLayer />
             </>
           )}
           {boardType === 'opponent' && (
             <>
               <BackgroundLayer />
               <DamageLayer boardType="opponent" />
+              <GridLayer />
               <TargetingLayer />
             </>
           )}
