@@ -40,7 +40,7 @@ const GameUI = () => {
         <MenuButton
           label={isClientsTurn ? 'Attack' : 'Opponents Turn'}
           action={() => {
-            if (game.data.selectedCell !== null) game.attackCell(game.data.selectedCell);
+            if (game.data.selectedCell !== null && isClientsTurn) game.attackCell(game.data.selectedCell);
           }}
           styleOverride={{ width: '15rem', marginTop: '3rem' }}
           disabled={!isClientsTurn}
